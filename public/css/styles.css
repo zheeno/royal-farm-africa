@@ -1,0 +1,239 @@
+.borderless {
+    border-width: 0px !important
+}
+
+td{
+    padding: 20px !important;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+tr:hover,
+tr.active{
+    background-color: #12151c !important;
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+    cursor: pointer;
+}
+
+tr:hover>td>span,
+tr:hover>td>strong,
+tr:hover>td>.cur-label,
+.green-text,
+tr.active>td>span,
+tr.active>td>strong,
+tr.active>td>.cur-label{
+    color: #009f00 !important
+}
+
+td>img,
+.img-sm-circle{
+    width: 35px !important;
+    margin-right: 10px;
+}
+
+td>span,
+td>strong,
+.cur-label{
+    font-weight: 500;
+    font-size: 18px !important;
+}
+
+#chart-container{
+    width: 100%;
+    height: 100%;
+}
+
+#chartMain{
+    height: 91vh
+}
+
+.p-l-20{
+    padding-left: 20px !important
+}
+
+.black-lighten-3{
+    background-color: #12151c !important;
+}
+
+.navbar-brand>img{
+    width: 35px !important
+}
+
+li{
+    margin: 2px;
+    border-radius: 5px !important;
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+
+li>a,
+.sm-bold-text{
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    
+}
+
+li.active,
+.green-btn{
+    background-color: #009f00 !important;
+}
+
+.green-text{
+    color: #009f00 !important;
+}
+
+li.active>a,
+.green-btn{
+    color: #FFF !important;
+}
+li.active:hover>a{
+    color: #fff !important; 
+}
+
+li:hover>a{
+    color: #c3bfbf !important; 
+}
+
+.navbar.navbar-light .breadcrumb .nav-item.active>.nav-link, 
+.navbar.navbar-light .navbar-nav .nav-item.active>.nav-link{
+    background-color: transparent !important;
+}
+
+.hero{
+    background-image: url("../img/hiker-man-colour-thumbnail.png");
+    background-position: right;
+}
+
+.hero-2{
+    background-image: url("../img/colour-thumbnail.png");
+    background-position: left;
+}
+
+.hero,
+.hero-2{
+    min-height: 50vh;
+    background-color: #FFF;
+    top: -30px;
+    position: relative;
+    background-attachment: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+.hero h3,
+.h1-responsive{
+    font-size: 300%;
+    font-weight: 500;
+    font-family: sans-serif;
+}
+.bold{
+    font-weight: 500;
+}
+.bg-grey,
+.grey-card{
+    background-color: #1d1f25;
+}
+.grey-card{
+    border-radius: 10px;
+}
+
+.grey-card>h3,
+.m-b-30{
+    margin-bottom: 30px;
+}
+
+.grey-card>span{
+    font-size: 14px !important;
+    margin-bottom: 30px;
+}
+
+body{
+    overflow-x: hidden !important;
+}
+
+.overflow-x-hidden{
+    overflow-x: hidden !important;
+}
+
+.align-text-center{
+    text-align: center !important;
+}
+
+.align-text-right{
+    text-align: right !important;
+}
+
+.center{
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+
+.card-head{
+    margin-left:8px !important; 
+    margin-right: 8px !important;
+    border-bottom: 1px solid #d7d7d7;
+}
+
+.align-end{
+    text-align: end !important;
+}
+
+.fs-14{
+    font-size: 14px !important;
+}
+
+.small-table>thead>tr>th>span,
+.small-table>tbody>tr>td>span{
+    padding: 0px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+main{
+    margin-top: 80px;
+}
+
+.img-sm{
+    width: 20px !important;
+}
+
+.plans-container{
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    overflow-x: hidden;
+}
+
+.text{
+    color: #464646
+}
+
+@media only screen and (max-width: 600px) { 
+    /* mobile devices */
+    main{
+        margin-top: 70px !important;
+    }
+    .hidden-sm{
+        display: none !important;
+    }
+    .grey.lighten-4{
+        background-color: #FFF !important;
+    }
+    .align-end{
+        text-align: left !important;
+    }
+    .hero-mask{
+        background-color: #bdbdbd4f !important;
+    }
+    .hero-2-mask{
+        background-color: #fff !important;
+    }
+}
+
+@media only screen and (min-width: 600px) { 
+    .hidden-md{
+        display: none !important;
+    }
+}

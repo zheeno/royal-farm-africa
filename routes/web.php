@@ -11,10 +11,25 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::GET('/', 'GuestController@landing')->name('landing');
+
+
+Route::group(['middleware' => 'auth'], function(){
+    Route::GET('/dashboard', 'HomeController@index')->name('home');
+
+    Route::GET('/history', 'HomeController@getUserSponsorHistory')->name('history');
+
+    Route::GET('/success', 'HomeController@showSuccessPage');
+
+    Route::group(['prefix' => 'sponsorships'], function(){
+        Route::GET('/{id}', 'HomeController@showSingleSponsorship');
+    });
+
+    Route::group(['prefix' => 'sponsors'], function(){
+        Route::POST('/create', 'HomeController@createSponsor');
+
+        Route::GET('/{id}', 'HomeController@openSponsorPage');
+    });
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

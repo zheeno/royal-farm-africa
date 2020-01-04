@@ -75,7 +75,8 @@ li>a,
 }
 
 li.active,
-.green-btn{
+.green-btn,
+.bg-green{
     background-color: #009f00 !important;
 }
 
@@ -115,6 +116,34 @@ li:hover>a{
     min-height: 50vh;
     background-color: #FFF;
     top: -30px;
+    position: relative;
+    background-attachment: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.grass-blades{
+    background-image: url("../img/woosh/grass_blades.png");
+    background-position: bottom;
+    position: relative;
+    background-attachment: absolute;
+    background-size: contain;
+    background-repeat: repeat-x;
+    z-index: 1000;
+    margin-top: -50px;
+}
+
+.login-right{
+    background-image: url("../img/woosh/Login_2.png");
+}
+
+.register-right{
+    background-image: url("../img/woosh/Launch_2.png");
+}
+
+.login-right,
+.register-right{
+    background-position: center;
     position: relative;
     background-attachment: absolute;
     background-size: contain;
@@ -210,6 +239,97 @@ main{
     color: #464646
 }
 
+.E404{
+    background-image: url("../img/woosh/404.png");
+}
+
+.E500{
+    background-image: url("../img/woosh/Smth_Went_Wrong_2.png");
+}
+
+.success{
+    background-image: url("../img/woosh/Launch.png");
+}
+
+.VR{
+    background-image: url("../img/woosh/VR.png");
+}
+
+.E232{
+    background-image: url("../img/woosh/232.png");
+    background-position: center;
+    background-attachment: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.btn-sm-rounded{
+    padding: 4px !important;
+    border-radius: 100px !important;
+    height: 30px !important;
+    width: 30px !important;
+}
+
+.E404,
+.E500,
+.success,
+.has-background{
+    min-height: 50vh;
+    background-position: center;
+    background-attachment: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.side-bar{
+    width: 300px;
+    position: fixed;
+    top: 50px;
+    flex-basis: 0;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+.side-bar .side-left{
+    width:100%
+}
+
+.avatar{
+    width: 70px;
+    height: 70px;
+    border-radius: 100px;
+    border: 1px solid #FFF;
+    padding: 10px;
+    background-color: #FFF;
+}
+
+.card-img-container{
+    height: 200px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.lg-card-img-container{
+    min-height: 200px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+}
+
+.neg-mt-10{
+    top: -8px;
+    position: relative;
+}
+
+.video-container{
+    width: 100vw;
+    height: 70vh;
+}
+
 @media only screen and (max-width: 600px) { 
     /* mobile devices */
     main{
@@ -229,6 +349,24 @@ main{
     }
     .hero-2-mask{
         background-color: #fff !important;
+    }
+    .side-bar{
+        flex-basis: auto !important;
+        -webkit-box-flex: unset !important;
+        flex-grow: unset !important;
+        z-index: 1000;
+        top: 0px;
+        position: fixed;
+        height: 100vh;
+    }
+    .side-bar .side-left{
+        width:73%
+    }
+    .lead {
+        font-size: 1rem !important;
+    }
+    .video-container{
+        height: 50vh;
     }
 }
 

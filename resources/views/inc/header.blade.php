@@ -21,13 +21,13 @@
                     </li>
                 @endif
             @else
-            <li class="nav-item @if(Route::currentRouteName() == 'dashboard' ) active @endif">
+            <li class="nav-item @if(Route::currentRouteName() == 'home' ) active @endif">
                 <a class="nav-link waves-effect waves-light" href="/dashboard">
                 Dashboard</a>
             </li>
-            <li class="nav-item @if(Route::currentRouteName() == 'wallet' ) active @endif">
-                <a class="nav-link waves-effect waves-light" href="/wallet">
-                Wallet</a>
+            <li class="nav-item @if(Route::currentRouteName() == 'history' ) active @endif">
+                <a class="nav-link waves-effect waves-light" href="/history">
+                History</a>
             </li>
             <li class="nav-item @if(Route::currentRouteName() == 'charts' ) active @endif">
                 <a class="nav-link waves-effect waves-light" href="/charts/BTC">
@@ -47,3 +47,29 @@
         </ul>
     </div>
 </nav>
+
+<!-- logout modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content black-lighten-3">
+      <div class="modal-header border-0">
+        <h5 class="modal-title green-text" id="logoutModalLabel">Log out</h5>
+        <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="white-ic fa fa-times"></span>
+        </button>
+      </div>
+      <div class="modal-body align-text-center">
+          <span class="fa fa-info-circle fa-2x white-ic mb-3"></span>
+        <p class="lead align-text-center white-text">Do you really wish to log out?</p>
+      </div>
+      <div class="modal-footer border-0">
+        <form id="logout-form" class="mx-auto" action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="button" class="btn grey lighten-4" data-dismiss="modal"><span class="text">Cancel</span></button>
+            <button type="submit" class="btn green-btn">Log out</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

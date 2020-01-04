@@ -7,11 +7,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    @yield('title')
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/scripts.js') }}" defer></script>
+    <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -31,25 +30,25 @@
 <body>
     <div id="app">
         @include('inc/header')
-        <div class="p-0 pt-5 mt-5">
+        <div class="row p-0 mt-5" style="min-height:100vh">
             @yield('content')
         </div>
-        <!-- grass blades -->
-    <div class="row pt-5 pb-5 grass-blades">
-        <div class="col-12 p-5"></div>
-    </div>
         @include('inc/footer')
     </div>
 </body>
 <!-- JQuery -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script type="text/javascript" src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/timeago.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/scripts.js') }}"></script>
+<script type="text/javascript" src="https://www.jqueryscript.net/demo/Small-jQuery-Number-Counter-Plugin-with-Easing-Effects-counter-js/js/counter.min.js"></script>
+<script type="text/javascript" src="https://www.jqueryscript.net/demo/Small-jQuery-Number-Counter-Plugin-with-Easing-Effects-counter-js/js/jquery.easing.js"></script>
 <!-- Bootstrap tooltips -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
 <!-- Bootstrap core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/js/mdb.min.js"></script>
-<script>
-    new WOW().init();
-</script>
+<!-- smooth scroll -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.10/SmoothScroll.js"></script>
 </html>

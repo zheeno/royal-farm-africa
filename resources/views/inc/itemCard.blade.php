@@ -26,11 +26,12 @@
                 <small class="grey-text">Duration</small>
                 <br /><span class="text">{{ $item->duration_in_months }} @if($item->duration_in_months > 1) {{"months"}} @else {{"month"}} @endif</span>
             </div>
-            <div class="col-4 align-text-right pt-3">
+            <div class="col-4 align-text-right">
                 @if($item->total_units > $sponsoredUnits && $item->is_active == true)
-                <span class="badge badge-success">Available</span>
+                <small class="grey-text">Units</small>
+                <br /><span class="text">{{ number_format($item->total_units) }}</span>
                 @else
-                <span class="badge badge-danger">Sold Out</span>
+                <span class="badge badge-danger mt-3">Sold Out</span>
                 @endif
             </div>
         </div>

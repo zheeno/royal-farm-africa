@@ -9,6 +9,7 @@ use App\Location;
 use App\Sponsor;
 use App\Sponsorship;
 use App\Subcategory;
+use App\SponsorshipReview;
 use App\Traits\GlobalTrait;
 
 class HomeController extends Controller
@@ -35,7 +36,7 @@ class HomeController extends Controller
         $sponsorships = Sponsorship::orderBy("id", "DESC")->take(3)->get();
         // get sponsor statistics
         $stats = $this->getSponsorStats();
-
+        
         return view('home')->with('data', [
             "stats" => $stats,
             "sponsorships" => $sponsorships,
@@ -142,9 +143,47 @@ class HomeController extends Controller
                 "remSponsUnits" => $remSponsUnits,
                 "claimed_units" => $this->getSponsoredUnits($sponsor->sponsorship),
                 "cap_raised" => $tot_cap,
+                "ratings" => $this->calcRating($sponsor->sponsorship),
             ]);
         }else{
             abort(404);
         }
+    }
+
+    // addReview
+    public function addReview(Request $request){
+        $sponsor_id = $request->input("sponsor_id");
+        $sponsorship_id = $request->input("sponsorship_id");
+        $rating = $request->input("rating");
+        $review = $request->input("review");
+
+        $rev = new SponsorshipReview();
+        $rev->user_id = Auth::user()->id;
+        $rev->sponsorship_id = $sponsorship_id;
+        $rev->is_author_sponsor = true;
+        $rev->num_stars = (int)$rating;
+        $rev->review = $review;
+        $rev->save();
+
+        return redirect("/sponsors/$sponsor_id");
+    }
+
+    // get initials
+    public static function getInitials($name){
+        $arr = explode(" ",$name);
+        $initials = "";
+        for($i = 0; $i < 2; $i++){
+            $initials .= substr($arr[$i], 0, 1);
+        }
+        return $initials;
+    }
+
+    // show stars
+    public static function showStars($num_stars){
+        $stars = "";
+        for($i = 0; $i < $num_stars; $i++){
+            $stars .= '<span class="fa fa-star yellow-ic"></span>';
+        }
+        return $stars;
     }
 }

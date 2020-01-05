@@ -70,4 +70,12 @@ $(document).ready(function () {
         }
     });
 
+    // dropdown selector for ratings
+    $("#ratingSelector .dropdown-item").on("click", function (evt) {
+        evt.preventDefault();
+        const rating = $(this).attr('data-value');
+        $("#rating").val(rating);
+        $("#ratingButton").html($(this).html());
+    })
+
 });

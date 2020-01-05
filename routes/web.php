@@ -23,6 +23,8 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::group(['prefix' => 'sponsorships'], function(){
         Route::GET('/{id}', 'HomeController@showSingleSponsorship');
+
+        Route::POST('/addReview', 'HomeController@addReview');
     });
 
     Route::group(['prefix' => 'sponsors'], function(){

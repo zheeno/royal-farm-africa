@@ -25,4 +25,7 @@ class Sponsorship extends Model
         return $this->hasMany('App\Sponsor');
     }
 
+    public function reviews(){
+        return $this->hasMany('App\SponsorshipReview', 'sponsorship_id')->orderBy('id', 'DESC');;
+    }
 }

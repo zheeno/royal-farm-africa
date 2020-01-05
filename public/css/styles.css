@@ -194,6 +194,10 @@ body{
     text-align: right !important;
 }
 
+.align-text-left{
+    text-align: left !important;
+}
+
 .center{
     margin-left: auto !important;
     margin-right: auto !important;
@@ -245,6 +249,10 @@ main{
 
 .E500{
     background-image: url("../img/woosh/Smth_Went_Wrong_2.png");
+}
+
+.NOREV{
+    background-image: url("../img/woosh/Social.png");
 }
 
 .success{
@@ -326,8 +334,24 @@ main{
 }
 
 .video-container{
-    width: 100vw;
+    width: 100%;
     height: 70vh;
+}
+
+.video-link-btn{
+    bottom: 0px !important;
+    right: 0px !important;
+    position: absolute !important;
+}
+
+.review-footer{
+    /* bottom: 15px !important;
+    position: absolute; */
+    width: 100% !important;
+}
+
+body{
+    overflow-x: hidden;
 }
 
 @media only screen and (max-width: 600px) { 

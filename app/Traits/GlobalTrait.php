@@ -110,4 +110,52 @@ trait GlobalTrait
         }
         return $highest;
     }
+
+    // rating calculator
+    public function calcRating($sponsorship){
+        $reviews = $sponsorship->reviews;
+        $total = 0; $_5stars = 0; $_4stars = 0;
+        $_3stars = 0; $_2stars = 0; $_1stars = 0;
+
+        foreach ($reviews as $key => $review) {
+            switch ($review->num_stars) {
+                case 5:
+                    $_5stars++;
+                    break;
+                case 4:
+                    $_4stars++;
+                    break;
+                case 3:
+                    $_3stars++;
+                    break;    
+                case 2:
+                    $_2stars++;
+                    break;
+                case 1:
+                    $_1stars++;
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+        }
+        $total = $_1stars + $_2stars + $_3stars + $_4stars + $_5stars;
+        $ratTot = $_1stars + ($_2stars * 2) + ($_3stars * 3) + ($_4stars * 4) + ($_5stars * 5);
+        if($total == 0){
+            $div = 1;
+        }else{
+            $div = $total;
+        }
+        $rating = $ratTot / $div;
+
+        return [
+            "1_stars" => $_1stars,
+            "2_stars" => $_2stars,
+            "3_stars" => $_3stars,
+            "4_stars" => $_4stars,
+            "5_stars" => $_5stars,
+            "rating_total" => $total,
+            "rating" => $rating
+        ];
+    }
 }

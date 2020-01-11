@@ -7,6 +7,8 @@ $(document).ready(function () {
         $("time.timeago").timeago();
         // timeago().render(document.querySelectorAll('.timeago'));
     });
+    // init tooltip
+    $('[data-toggle="tooltip"]').tooltip();
 
     $('.inc-unit').on('click', function (evt) {
         evt.preventDefault();
@@ -76,6 +78,19 @@ $(document).ready(function () {
         const rating = $(this).attr('data-value');
         $("#rating").val(rating);
         $("#ratingButton").html($(this).html());
-    })
+    });
 
+    // wallet payment initiator
+    $('.wallet-pay-btn').on('click', function (evt) {
+        evt.preventDefault();
+        $('#confirmationModal').modal('show');
+    });
+
+    // hover effects on featured cards
+    $('.featured-card').mouseenter(function () {
+        $(this).addClass('grey lighten-3');
+    });
+    $('.featured-card').mouseleave(function () {
+        $(this).removeClass('grey lighten-3');
+    });
 });

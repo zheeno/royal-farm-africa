@@ -33,4 +33,10 @@ return [
         realpath(storage_path('framework/views'))
     ),
 
+
+    // 'google' => [
+    //     'client_id' => env('GOOGLE_APP_ID'),
+    //     'client_secret' => env('GOOGLE_SECRET_CODE'),
+    //     'redirect' => 'http://localhost:8000/auth/google/callback',
+    // ],
 ];

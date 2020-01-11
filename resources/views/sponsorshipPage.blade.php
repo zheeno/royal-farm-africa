@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                             @if($data['sponsorship']->total_units > $data['sponsored_units'] && $data['sponsorship']->is_active == true)
-                                <form method="POST" action="/sponsors/create">
+                                <form method="POST" action="/sponsors/addToCart">
                                     @csrf
                                     <input type="hidden" name="sponsorship_id" value="{{ $data['sponsorship']->id }}" />
                                     <div class="row pt-3">
@@ -53,11 +53,14 @@
                                                 <div class="input-group-prepend">
                                                 <button type="button" class="dec-unit btn btn-grey btn-sm m-0">-</span>
                                                 </div>
-                                                <input id="units" type="number" name="selected_units" value="1" data-max-val="{{ number_format($data['sponsorship']->total_units - $data['sponsored_units']) }}" class="p-0 align-text-center form-control" required />
+                                                <input id="units" type="number" name="selected_units" value="@if($data['cart_item']){{$data['cart_item']->units}}@else{{1}}@endif" data-max-val="{{ number_format($data['sponsorship']->total_units - $data['sponsored_units']) }}" class="p-0 align-text-center form-control" required />
                                                 <div class="input-group-append">
                                                     <button type="button" class="inc-unit btn btn-grey btn-sm m-0">+</span>
                                                 </div>
                                             </div>
+                                            @if($data['cart_item'])
+                                                <span class="neg-mt-10 red-text">Sponsorship added to cart</span>
+                                            @endif
                                         </div>
                                         <div class="col-md-6 mx-auto align-text-right">
                                             <button type="submit" class="btn green-btn">Sponsor</button>
@@ -90,5 +93,19 @@
                 {!! $data['sponsorship']->description !!}
             </div>
         </div>
+
+        <!-- video player -->
+        @if($data['sponsorship']->subcategory->video_url != null)
+        <div id="videoPlayer" class="row">
+            @if($data['sponsorship']->subcategory->video_tag_line != null)
+            <div class="col-12 pl-4 pl-md-5">
+                <h2 class="h2-responsive mb-md-0 bold text">{{ $data['sponsorship']->subcategory->video_tag_line }}</h2>
+            </div>
+            @endif
+            <div class="col-12 m-md-4 mt-0 shadow-lg p-0 black-lighten-3">
+                <iframe class="video-container" src="{{ $data['sponsorship']->subcategory->video_url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+        @endif
     </div>
 @endsection

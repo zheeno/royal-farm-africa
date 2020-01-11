@@ -1,19 +1,31 @@
-<nav class="mb-1 navbar navbar-expand-lg fixed-top navbar-light white shadow-none pt-md-0 pb-md-0">
-    <a class="navbar-brand" href="/">
-        <img src="{{ asset('img/logo_no_text.png') }}" />
+<?php use App\Http\Controllers\HomeController; ?>
+
+<nav class="mb-1 navbar navbar-expand-lg navbar-light white shadow-none" style="margin-top: -13px;">
+    <a class="navbar-brand  mr-4" href="/">
+        <img src="{{ asset('img/logo.png') }}" />
     </a>
     <button class="navbar-toggler" type="button" onClick='$("#navbarSupportedContent-4").collapse("toggle");' aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item @if(Route::currentRouteName() == 'landing' ) active @endif">
+                <a class="nav-link waves-effect waves-light" href="/">
+                Home</a>
+            </li>
+            <li class="nav-item @if(Route::currentRouteName() == 'sponsorships' ) active @endif">
+                <a class="nav-link waves-effect waves-light" href="/sponsorships">
+                Sponsorships</a>
+            </li>
+        </ul>
         <ul class="navbar-nav ml-auto">
             @guest
-                <li class="nav-item">
+                <li class="nav-item @if(Route::currentRouteName() == 'login' ) active @endif">
                     <a class="nav-link waves-effect waves-light" href="/login">
                     <i class="fas fa-gear"></i> Login</a>
                 </li>
                 @if (Route::has('register'))
-                    <li class="nav-item active">
+                    <li class="nav-item @if(Route::currentRouteName() == 'register' ) active @endif">
                         <a class="nav-link waves-effect waves-light" href="/register">
                         Register
                         <span class="sr-only">(current)</span>
@@ -29,13 +41,24 @@
                 <a class="nav-link waves-effect waves-light" href="/history">
                 History</a>
             </li>
-            <li class="nav-item @if(Route::currentRouteName() == 'charts' ) active @endif">
-                <a class="nav-link waves-effect waves-light" href="/charts/BTC">
-                Charts</a>
+            <li class="nav-item @if(Route::currentRouteName() == 'profile' ) active @endif">
+                <a class="nav-link waves-effect waves-light" href="/profile">
+                Profile</a>
             </li>
             <li class="nav-item @if(Route::currentRouteName() == 'security' ) active @endif">
                 <a class="nav-link waves-effect waves-light" href="/security">
                 Security</a>
+            </li>
+
+            <li class="nav-item @if(Route::currentRouteName() == 'cart' ) active @endif">
+                <a class="nav-link waves-effect waves-light" href="/cart">
+                    <span class="hidden-sm fa fa-shopping-cart"></span>
+                    <span class="hidden-md">Cart</span>
+                    @if(count(HomeController::getCartData()['cart_items']) > 0)
+                    &nbsp;
+                    <span class="badge red lighten-1 p-2" style="border-radius: 50px">{{ count(HomeController::getCartData()['cart_items']) }}</span>
+                    @endif  
+                </a>
             </li>
 
             <li class="nav-item">

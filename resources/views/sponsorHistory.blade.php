@@ -2,12 +2,19 @@
 @section('title')
     <title>{{ config('app.name', 'Laravel') }} | Sponsor History</title>
 @endsection
-
+<?php use App\Http\Controllers\HomeController; ?>
 @section('content')
 <div class="container-fluid mt-5">
     <div class="row">
         @include('inc/statsScreen')
     </div>
+    @if(@session('success'))
+    <div class="row mb-3 mt-3">
+        <div class="col-md-8 mx-auto">
+            <div class="alert alert-success">{!! @session('success') !!}</div>
+        </div>
+    </div>
+    @endif
     <div class="row">
         <div class="col-12">
             <div class="row">
@@ -27,29 +34,8 @@
                     @else
                         <h2 class="h2-responsive text">Your Sponsorships</h2>
                         <?php $delay = 0.6; ?>
-                        @foreach($data['sponsorHistory'] as $history)
-                            <a class="row white mb-2 shadow p-3 p-md-2 wow flipInX" data-wow-delay="{{ $delay }}s" data-wow-duration="4s" href="/sponsors/{{ $history->id }}">
-                                <div class="col-md-3">
-                                    <strong class="text">{{ $history->sponsorship->title }}</strong>
-                                    <br /><small class="grey-text" style="top:-10px; position: relative"><time class="timeago" datetime="{{ $history->created_at }}"></time></small>
-                                </div>
-                                <div class="col-md-2 align-text-center">
-                                    <strong class="text">{{ $history->units }}</strong>
-                                    <br /><small class="grey-text" style="top:-10px; position: relative">Units</small>
-                                </div>
-                                <div class="col-md-2 align-text-center">
-                                    <strong class="text">{{ $history->expected_return_pct * 100 }}%</strong>
-                                    <br /><small class="grey-text" style="top:-10px; position: relative">Return</small>
-                                </div>
-                                <div class="col-md-2 align-text-center">
-                                    <strong class="text">&#8358;{{ number_format($history->total_capital, 2) }}</strong>
-                                    <br /><small class="grey-text" style="top:-10px; position: relative">Capital</small>
-                                </div>
-                                <div class="col-md-3 align-text-center">
-                                    <strong class="text">&#8358;{{ number_format($history->total_capital * $history->expected_return_pct, 2) }}</strong>
-                                    <br /><small class="grey-text" style="top:-10px; position: relative"><time class="timeago" datetime="{{ $history->sponsorship->expected_completion_date }}"></time></small>
-                                </div>
-                            </a>
+                        @foreach($data['sponsorHistory'] as $item)
+                            @include('inc/sponsorListItem')
                             <?php $delay += 0.6; ?>
                         @endforeach
                     @endif
@@ -62,12 +48,8 @@
                             <h5 class="h5-responsive white-text bold">Your Wallet</h5> 
                         </div>
                         <div class="mt-3 mb-3 col-12 align-text-center pl-2 pr-2">
-                            <h3 class="fa-2x align-text-center white-text mb-0">&#8358;{{ number_format($data['stats']['capital_all_time'] - $data['stats']['active_expected_returns'], 2) }}</h3>
+                            <h3 class="fa-2x align-text-center white-text mb-0">&#8358;{{ number_format(HomeController::getWalletBalance(), 2) }}</h3>
                             <small class="white-text">Avail. Balance</small>
-                        </div>
-                        <div class="mt-3 mb-3 col-12 align-text-center pl-2 pr-2">
-                            <h3 class="fa-2x align-text-center white-text mb-0">&#8358;{{ number_format($data['stats']['capital_all_time'], 2) }}</h3>
-                            <small class="white-text">Ledger Balance</small>
                         </div>
                     </div>
                     <!-- more stats -->
@@ -94,7 +76,9 @@
     @if(count($data['featured_sponsorships']) > 0)
     <div class="row p-3 p-md-5 pt-5 mb-0 grey lighten-5">
         <div class="col-12 mb-5">
-            <h1 class="fa-2x text">Featured Sponsorships</h1>
+            <h1 class="fa-2x text">Featured Sponsorships
+                <small class="fs-14 float-right"><a href="/sponsorships">See More <span class="fa fa-arrow-right"></span></a></small>
+            </h1>
         </div>
         <?php $delay = 0.6; ?>
         @foreach($data['featured_sponsorships'] as $item)

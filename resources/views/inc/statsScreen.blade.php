@@ -32,11 +32,13 @@
             <!-- monetary figures -->
             <div class="ml-auto col-md-4 pl-0 pr-0">
                 <div class="row">
+                    @if($data["stats"]["active_sponsorships"] > 0)
                     <div class="col-12 border-bottom pt-1 pb-1 align-text-center">
                         <h3 class="text h3-responsive mb-0">&#8358;{{ number_format($data["stats"]["active_expected_returns"], 2) }}</h3>
                         <small class="grey-text">Expected Returns in <time class="timeago" datetime="{{ $data['stats']['high_exp_comp_dates'] }}"></time></small>
                     </div>
-                    <div class="col-12 pt-1 pb-1 align-text-center">
+                    @endif
+                    <div class="col-12 @if($data['stats']['active_sponsorships'] == 0) pt-4 pb-3 @else pt-1 pb-1 @endif align-text-center">
                         <h3 class="text h3-responsive mb-0">&#8358;{{ number_format($data["stats"]["total_profits_made"], 2) }}</h3>
                         <small class="grey-text">All-Time Profits</small>
                     </div>

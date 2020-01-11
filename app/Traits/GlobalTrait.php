@@ -56,9 +56,8 @@ trait GlobalTrait
                 $completed_sponsorships++;
                 /* This may be calculated differently in the 
                 future using records from remittance table */
-
                 // get total profits made from completed sponsorships
-                $total_profits_made += $data->expected_return_pct * $data->total_capital;
+                $total_profits_made +=  $data->actual_returns_received - $data->total_capital;
             }
             if(!$this->array_search($data->sponsorship->id, $proc_arr)){
                 array_push($proc_arr, $data->sponsorship->id);
@@ -102,13 +101,17 @@ trait GlobalTrait
 
     // highest value in an array algorithm
     public function array_highest($arr){
-        $highest = $arr[0];
-        for ($i=0; $i < count($arr); $i++) { 
-            if($highest < $arr[$i]){
-                $highest = $arr[$i];
+        if(count($arr) == 0){
+            return null;
+        }else{
+            $highest = $arr[0];
+            for ($i=0; $i < count($arr); $i++) { 
+                if($highest < $arr[$i]){
+                    $highest = $arr[$i];
+                }
             }
+            return $highest;
         }
-        return $highest;
     }
 
     // rating calculator

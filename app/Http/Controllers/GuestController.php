@@ -24,4 +24,34 @@ class GuestController extends Controller
             "featured_sponsorships" => $sponsorships,
         ]);
     }
+
+
+    // showSponsorships
+    public function showSponsorships(Request $request){
+        $id = $request->input("id");
+        $input = $request->input();
+        $category = Category::where("category_name", "Agriculture")->first();
+        if($category){
+            $subcategories = Subcategory::where("category_id", $category->id)->orderBy("sub_category_name", "ASC")->get();
+            $sponsorships = []; $curCatId = 0; $curSubCat = null;
+            if($id == null){
+                // get all sponsorships
+                $sponsorships = Sponsorship::where("category_id", $category->id)->orderBy('id', 'DESC')->paginate(12);
+            }else{
+                // get wrt selected subcategory
+                $sponsorships = Sponsorship::where("category_id", $category->id)->where('sub_category_id', $id)->orderBy('id', 'DESC')->paginate(12);
+                $curCatId = $id;
+                $curSubCat = Subcategory::findorfail($curCatId);
+            }
+            $sponsorships->appends($input);
+            return view('sponsorships')->with('data', [
+                "sub_cats" => $subcategories,
+                "sponsorships" => $sponsorships,
+                "current_cat_id" => $curCatId,
+                "cur_sub_category" => $curSubCat,
+            ]);
+        }else{
+            abort(404);
+        }
+    }
 }

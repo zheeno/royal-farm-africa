@@ -9,9 +9,6 @@
 
     @yield('title')
 
-    <!-- Scripts -->
-    <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -30,7 +27,7 @@
 <body>
     <div id="app">
         @include('inc/header')
-        <div class="row p-0 mt-5" style="min-height:100vh">
+        <div class="row p-0" style="min-height:100vh">
             @yield('content')
         </div>
         @include('inc/footer')
@@ -51,4 +48,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/js/mdb.min.js"></script>
 <!-- smooth scroll -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.10/SmoothScroll.js"></script>
+
+<!-- <script src="{{ asset('js/app.js') }}"></script> -->
+
 </html>

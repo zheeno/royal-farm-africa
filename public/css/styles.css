@@ -56,7 +56,7 @@ td>strong,
 }
 
 .navbar-brand>img{
-    width: 35px !important
+    width: 150px !important
 }
 
 li{
@@ -78,6 +78,26 @@ li.active,
 .green-btn,
 .bg-green{
     background-color: #009f00 !important;
+}
+
+.pagination li.active>.page-link{
+    padding: 10px !important;
+    top: 10;
+    position: relative;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.pagination li{
+    padding: .25rem!important;
+}
+
+.bg-midnight-blue{
+    background-color: #1e2538 !important;
+}
+
+.bg-img-luminous{
+    background-blend-mode: luminosity;
 }
 
 .green-text{
@@ -255,8 +275,16 @@ main{
     background-image: url("../img/woosh/Social.png");
 }
 
+.NORESULT{
+    background-image: url("../img/woosh/no_results.png");
+}
+
 .success{
     background-image: url("../img/woosh/Launch.png");
+}
+
+.checkout{
+    background-image: url("../img/woosh/Ecommerce.png");
 }
 
 .VR{
@@ -276,6 +304,19 @@ main{
     border-radius: 100px !important;
     height: 30px !important;
     width: 30px !important;
+}
+
+img.btn-sm-rounded{
+    height: 40px !important;
+    width: 40px !important;
+}
+
+.avatar-rounded{
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    border: 5px solid #F5F5F5;
+    padding: 3px;
 }
 
 .E404,
@@ -353,6 +394,49 @@ main{
 body{
     overflow-x: hidden;
 }
+
+.sponsor-list-item.in-progress{
+    background-color: #03a9f4 !important;
+}
+
+.sponsor-list-item.is-completed{
+    background-color: #00796b !important;
+}
+
+.sponsor-list-item.in-progress strong,
+.sponsor-list-item.in-progress small,
+.sponsor-list-item.in-progress span,
+.sponsor-list-item.is-completed strong,
+.sponsor-list-item.is-completed small,
+.sponsor-list-item.is-completed span{
+    color: #FFF !important
+}
+
+.featured-card:hover{
+    /* margin-top:-5px !important; */
+    box-shadow: 0 .5rem 1rem  #009f0059!important
+}
+
+.profile-update-container{
+    margin-bottom:30px;
+}
+
+.profile-update-container>.profile-update-title{
+    padding-left:10px;
+    padding-top:20px;
+    border-bottom: 3px solid #009f00;
+    margin-bottom: 30px;
+}
+
+/* .profile-update-container>.profile-update-title>h5{
+     font-weight: 600; 
+} */
+
+.profile-update-container>.profile-update-title>h5>a{
+    width:100%;
+    color: #009f00 !important;
+}
+
 
 @media only screen and (max-width: 600px) { 
     /* mobile devices */

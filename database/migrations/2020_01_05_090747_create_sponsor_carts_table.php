@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSponsorsTable extends Migration
+class CreateSponsorCartsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,15 @@ class CreateSponsorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sponsors', function (Blueprint $table) {
+        Schema::create('sponsor_carts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->String('user_id');
+            $table->String('session_id');
             $table->String('sponsorship_id');
             $table->Integer('units');
             $table->float('price_per_unit');
             $table->float('expected_return_pct');
-            $table->float('actual_returns_received')->default(0);
             $table->float('total_capital');
-            $table->String('transaction_id');
-            $table->String('transaction_ref_id');
-            $table->String('payment_method')->nullable();
-            $table->boolean('has_paid')->default(false);
             $table->timestamps();
         });
     }
@@ -37,6 +33,6 @@ class CreateSponsorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sponsors');
+        Schema::dropIfExists('sponsor_carts');
     }
 }

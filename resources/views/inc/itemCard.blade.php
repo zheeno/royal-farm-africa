@@ -4,8 +4,8 @@
         $sponsoredUnits += $sponsor->units;
     }
 ?>
-<a href="/sponsorships/{{$item->id}}" class="col-md-3 p-0 mx-auto shadow wow fadeInRight" data-wow-delay="{{ $delay }}s" data-wow-duration="4s">
-    <div class="card-img-container p-5 white" style="background-image:url('{{ $item->subcategory->cover_image_url }}')"></div>
+<a href="/sponsorships/{{$item->id}}" class="featured-card col-md-3 p-0 mx-auto shadow wow fadeInRight" data-wow-delay="{{ $delay }}s" data-wow-duration="4s">
+    <div class="card-img-container @if($item->total_units > $sponsoredUnits && $item->is_active == true) bg-img-colored @else bg-img-luminous @endif p-5 white" style="background-image:url('{{ $item->subcategory->cover_image_url }}')"></div>
     <div class="p-3">
         <div class="row">
             <div class="col-6">

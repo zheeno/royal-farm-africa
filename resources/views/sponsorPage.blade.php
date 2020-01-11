@@ -21,7 +21,7 @@
                             <div class="col-12">
                                 <h1 class="h1-responsive text mb-0">{{ $data['sponsor']->sponsorship->title }}</h1>
                                 <a href="/sponsorships/locations/{{ $data['sponsor']->sponsorship->location->id }}" class="badge badge-info white-text">{{ $data['sponsor']->sponsorship->location->location_name }}</a>
-                                <span class="badge"><span class="text">Entry created 
+                                <span class="badge" data-toggle="tooltip" title="{{ $data['sponsor']->sponsorship->created_at }}"><span class="text">Entry created 
                                     <time class="timeago" datetime="{{ $data['sponsor']->sponsorship->created_at }}"></time>
                                     </span>
                                 </span>
@@ -36,6 +36,7 @@
                                 <h5 class="h5-responsive mb-0 text">{{ number_format($data['sponsor']->sponsorship->duration_in_months) }}&nbsp;<small>months</small></h5>
                                 <small class="neg-mt-10 grey-text">Duration</small>
                             </div>
+                            @if(!$data['sponsor']->sponsorship->is_completed)
                             <div class="col-md-3 mx-auto pt-2">
                                 @if($data['remSponsUnits'] > 0 && $data['sponsor']->sponsorship->is_active)
                                     <h5 class="h5-responsive mb-0 text">{{ number_format($data['remSponsUnits']) }}</h5>
@@ -44,9 +45,10 @@
                                     <span class="badge badge-danger">Sold Out</span>
                                 @endif
                             </div>
+                            @endif
                             <div class="col-md-3 mx-auto pt-2">
                                 @if($data['sponsor']->sponsorship->in_progress)
-                                    <span class="badge badge-warning">In Progress</span>
+                                    <span class="badge badge-info">In Progress</span>
                                 @else
                                     @if($data['sponsor']->sponsorship->is_completed)
                                     <span class="badge badge-success">Completed</span>
@@ -68,12 +70,12 @@
                                     </button>&nbsp;
                                     <strong class="float-right">Fruitful Farms</strong>
                                     <br />
-                                    <a href="/sponsorships/category/{{ $data['sponsor']->sponsorship->category->id }}/{{ $data['sponsor']->sponsorship->subcategory->id }}" class="badge badge-success float-right">{{ $data['sponsor']->sponsorship->subcategory->sub_category_name }}</a>
+                                    <a data-toggle="tooltip" title="Category" href="/sponsorships?id={{ $data['sponsor']->sponsorship->subcategory->id }}" class="badge badge-success float-right">{{ $data['sponsor']->sponsorship->subcategory->sub_category_name }}</a>
                                 </div>
                             </div>
                                 <div class="col-12 align-text-right">
                                     @if(!$data['sponsor']->sponsorship->is_completed)
-                                    <span class="badge orange darken-2">
+                                    <span class="badge orange darken-2" data-toggle="tooltip" title="{{ $data['sponsor']->sponsorship->expected_completion_date }}">
                                         <span class="white-ic fa-clock fa"></span>&nbsp;
                                         <span class="white-text">Maturity Period:</span>&nbsp;
                                         <time class="white-text timeago" datetime="{{ $data['sponsor']->sponsorship->expected_completion_date }}"></time>
@@ -111,10 +113,25 @@
                         <h2 class="h2-responsive text">&#8358;{{ number_format($data['sponsor']->total_capital, 2) }}</h2>
                         <span class="fs-14 neg-mt-10 grey-text">Capital Invested</span>
                     </div>
+                    @if(!$data['sponsor']->sponsorship->is_completed)
                     <div class="col-md-4 p-3 pt-5 pb-5 align-text-center">
                         <h2 class="h2-responsive green-text bold">&#8358;{{ number_format($data['sponsor']->total_capital * $data['sponsor']->expected_return_pct, 2) }}</h2>
                         <span class="fs-14 neg-mt-10 grey-text">Estimated Profit</span>
                     </div>
+                    @else
+                    <div class="col-md-4 p-3 align-text-center">
+                        <div class="row mb-3">
+                            <div class="col-12 pt-2">
+                                <h4 class="h4-responsive green-text bold">&#8358;{{ number_format(($data['sponsor']->actual_returns_received - $data['sponsor']->total_capital), 2) }}</h4>
+                                <span class="fs-14 neg-mt-10 grey-text">Profit Made</span>
+                            </div>
+                            <div class="col-12">
+                                <h4 class="h4-responsive green-text bold">&#8358;{{ number_format($data['sponsor']->actual_returns_received, 2) }}</h4>
+                                <span class="fs-14 neg-mt-10 grey-text">Actual Returns Received</span>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
                 <div class="row p-5 grass-blades"></div>
             </div>
@@ -176,9 +193,20 @@
             <div class="col-md-5 p-3 p-md-4 shadow-lg mb-3 @if($index % 2) ml-auto @else mr-auto @endif">
                 <div class="row">
                     <div class="col-12 border-bottom">
-                        <button class="btn bg-green btn-sm-rounded float-left">
-                            <span class="white-text">{{ HomeController::getInitials($review->author->name) }}</span>
-                        </button>&nbsp;
+                        @if($review->author->profile)
+                            @if(strlen($review->author->profile->avatar_url) == 0)
+                            <button class="btn bg-green btn-sm-rounded float-left">
+                                <span class="white-text">{{ HomeController::getInitials($review->author->name) }}</span>
+                            </button>
+                            @else
+                            <img src="{{ $review->author->profile->avatar_url }}" class="img-responsive btn-sm-rounded" />
+                            @endif
+                        @else
+                            <button class="btn bg-green btn-sm-rounded float-left">
+                                <span class="white-text">{{ HomeController::getInitials($review->author->name) }}</span>
+                            </button>
+                        @endif
+                        &nbsp;
                         <strong class="text">{{ $review->author->name }}</strong>
                         @if($review->is_author_sponsor)<br /><small class="neg-mt-10 ml-2 grey-text">Sponsor</small>@endif
                     </div>

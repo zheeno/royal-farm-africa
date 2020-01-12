@@ -279,6 +279,14 @@ main{
     background-image: url("../img/woosh/no_results.png");
 }
 
+.NOTRANSACT{
+    background-image: url("../img/woosh/no_transactions.png");
+}
+
+.NONOTIFS{
+    background-image: url("../img/woosh/no_notif.jpg");
+}
+
 .success{
     background-image: url("../img/woosh/Launch.png");
 }

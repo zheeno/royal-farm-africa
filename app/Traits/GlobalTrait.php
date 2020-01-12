@@ -8,9 +8,25 @@ use App\Location;
 use App\Sponsor;
 use App\Sponsorship;
 use App\Subcategory;
-
+use App\Wallet;
 trait GlobalTrait
 {
+
+
+    // get user's wallet balance
+    public static function getWalletBalance(){
+        $credit = 0; $debit = 0;
+        $trans = Wallet::where("user_id", Auth::user()->id)->get();
+        foreach ($trans as $key => $tran) {
+            if($tran->is_credit){
+                $credit += $tran->amount;
+            }else{
+                $debit += $tran->amount;
+            }
+        }
+        return $credit - $debit;
+    }
+
     // getSponsoredUnits
     public function getSponsoredUnits($sponsorship){
         // get number of units

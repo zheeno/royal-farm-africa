@@ -42,4 +42,8 @@ class User extends Authenticatable
         return $this->hasOne('App\Profile');
     }
 
+    public function transactions(){
+        return $this->hasMany('App\Wallet')->orderBy("id", "DESC");
+    }
+
 }

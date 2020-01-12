@@ -10,6 +10,7 @@
             <div class="col-12 has-background NORESULT"></div>
             <div class="col-12 align-text-center">
                 <h3 class="h3-responsive text">Your cart is empty</h3>
+                <a class="btn green-btn" href="/sponsorships">Browse</a>
             </div>
         </div>
     @else

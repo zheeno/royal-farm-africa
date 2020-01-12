@@ -9,9 +9,31 @@ use App\Sponsor;
 use App\Sponsorship;
 use App\Subcategory;
 use App\Wallet;
+use Session;
+use App\SponsorCart;
+
 trait GlobalTrait
 {
 
+
+    // cart data
+    public static function getCartData(){
+        $session_id = Session::getId();
+        $cartItems = SponsorCart::where("session_id", $session_id)->where("user_id", Auth::user()->id)->orderBy("id", "DESC")->get();
+        // get figures
+        $total_cap = 0; $total_units = 0; $total_est_returns = 0;
+        foreach ($cartItems as $key => $item) {
+            $total_cap += $item->total_capital;
+            $total_units += $item->units;
+            $total_est_returns += $item->expected_return_pct * $item->total_capital;
+        }
+        return [
+            "cart_items" => $cartItems,
+            "total_cap" => $total_cap,
+            "total_units" => $total_units,
+            "total_est_returns" => $total_est_returns,
+        ];
+    }
 
     // get user's wallet balance
     public static function getWalletBalance(){

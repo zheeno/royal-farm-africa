@@ -51,4 +51,6 @@
 
 <!-- <script src="{{ asset('js/app.js') }}"></script> -->
 
+<script type="text/javascript" src="http://flw-pms-dev.eu-west-1.elasticbeanstalk.com/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
+
 </html>

@@ -27,6 +27,16 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::POST('/changeAvatar', 'HomeController@updateUserAvatar');
 
+    // ravepay group
+    Route::group(['prefix' => 'ravePay'], function(){
+        Route::POST('/', 'RaveController@ravePay');
+        Route::POST('/handler', 'RaveController@ravePayProcHandler');
+
+        Route::POST('/checkout', 'RaveController@ravePaycheckout');
+        Route::POST('/checkoutHandler', 'RaveController@checkoutHandler');
+
+    });
+
     // cart group
     Route::group(['prefix' => 'cart'], function(){
         Route::GET('/', 'HomeController@showCartPage')->name("cart");

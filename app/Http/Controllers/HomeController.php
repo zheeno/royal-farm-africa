@@ -16,6 +16,8 @@ use App\SponsorCart;
 use App\Wallet;
 use App\Profile;
 use App\User;
+use App\Notification;
+
 use App\Traits\GlobalTrait;
 use Illuminate\Support\Facades\Storage;
 
@@ -71,7 +73,7 @@ class HomeController extends Controller
         $capital = $units * $sponsorship->price_per_unit;
         // check if item is available
         // check if sponsorship is active
-        if($sponsorship->is_active){
+        if($sponsorship->is_active && !$sponsorship->is_completed){
             // check if units are available
             $remSponsUnits = $sponsorship->total_units - $this->getSponsoredUnits($sponsorship);
             if($remSponsUnits >= $units){
@@ -164,6 +166,18 @@ class HomeController extends Controller
                         // delete the item from cart
                         $_sponsor = SponsorCart::find($item->id);
                         $_sponsor->forceDelete();
+
+                        // notify the user of the entry
+                        $link = "/sponsors/".$sponsor->id;
+                        $message = "Welcome ".Auth::user()->name.", we are glad to have you as a sponsor. 
+                        We have received your entry to sponsor ".number_format($item->units)." unit(s) of the <strong><a href='$link'>".$item->sponsorship->title."</a></strong> sponsorship. 
+                        For more information on how to keep track of the progress on the farms, kindly contact our support center.";
+                        $notif = new Notification();
+                        $notif->user_id = Auth::user()->id;
+                        $notif->message = $message;
+                        $notif->link = $link;
+                        $notif->seen = false;
+                        $notif->save();
                     }
                     // notify the admin panel of the sponsor entry
                     return redirect("success")
@@ -197,25 +211,6 @@ class HomeController extends Controller
         }else{
             return false;
         }
-    }
-
-    // cart data
-    public static function getCartData(){
-        $session_id = Session::getId();
-        $cartItems = SponsorCart::where("session_id", $session_id)->where("user_id", Auth::user()->id)->orderBy("id", "DESC")->get();
-        // get figures
-        $total_cap = 0; $total_units = 0; $total_est_returns = 0;
-        foreach ($cartItems as $key => $item) {
-            $total_cap += $item->total_capital;
-            $total_units += $item->units;
-            $total_est_returns += $item->expected_return_pct * $item->total_capital;
-        }
-        return [
-            "cart_items" => $cartItems,
-            "total_cap" => $total_cap,
-            "total_units" => $total_units,
-            "total_est_returns" => $total_est_returns,
-        ];
     }
 
     // createSponsor
@@ -430,6 +425,13 @@ class HomeController extends Controller
         $profile->save();
 
         return redirect("/profile")->with("success", "Profile photo Updated successfully");
+    }
+
+    // markAsRead
+    public static function markAsRead($id){
+        $notif = Notification::findorfail($id);
+        $notif->seen = true;
+        $notif->save();
     }
 
 }

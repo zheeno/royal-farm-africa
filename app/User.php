@@ -46,4 +46,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Wallet')->orderBy("id", "DESC");
     }
 
+
+    public function unreadNotifs(){
+        return $this->hasMany('App\Notification')->where("seen", false)->orderBy("id", "DESC");
+    }
+
+    public function allNotifs(){
+        return $this->hasMany('App\Notification')->orderBy("id", "DESC");
+    }
 }

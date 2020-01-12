@@ -22,7 +22,7 @@
                                 <h1 class="h1-responsive text mb-0">{{ $data['sponsor']->sponsorship->title }}</h1>
                                 <a href="/sponsorships/locations/{{ $data['sponsor']->sponsorship->location->id }}" class="badge badge-info white-text">{{ $data['sponsor']->sponsorship->location->location_name }}</a>
                                 <span class="badge" data-toggle="tooltip" title="{{ $data['sponsor']->sponsorship->created_at }}"><span class="text">Entry created 
-                                    <time class="timeago" datetime="{{ $data['sponsor']->sponsorship->created_at }}"></time>
+                                    <time class="timeago" datetime="{{ $data['sponsor']->created_at }}"></time>
                                     </span>
                                 </span>
                             </div>

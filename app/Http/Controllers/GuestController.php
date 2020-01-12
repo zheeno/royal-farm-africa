@@ -36,10 +36,10 @@ class GuestController extends Controller
             $sponsorships = []; $curCatId = 0; $curSubCat = null;
             if($id == null){
                 // get all sponsorships
-                $sponsorships = Sponsorship::where("category_id", $category->id)->orderBy('id', 'DESC')->paginate(12);
+                $sponsorships = Sponsorship::where("category_id", $category->id)->where('in_progress', false)->where('is_completed', false)->orderBy('id', 'DESC')->paginate(12);
             }else{
                 // get wrt selected subcategory
-                $sponsorships = Sponsorship::where("category_id", $category->id)->where('sub_category_id', $id)->orderBy('id', 'DESC')->paginate(12);
+                $sponsorships = Sponsorship::where("category_id", $category->id)->where('in_progress', false)->where('is_completed', false)->where('sub_category_id', $id)->orderBy('id', 'DESC')->paginate(12);
                 $curCatId = $id;
                 $curSubCat = Subcategory::findorfail($curCatId);
             }

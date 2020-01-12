@@ -327,6 +327,14 @@ img.btn-sm-rounded{
     padding: 3px;
 }
 
+.notif-counter{
+    top: -15px !important;
+    position: relative !important;
+    border-radius: 50px !important;
+    font-size: 15px !important;
+    left: -8px !important;
+}
+
 .E404,
 .E500,
 .success,

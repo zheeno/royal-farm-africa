@@ -11,10 +11,12 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item @if(Route::currentRouteName() == 'landing' ) active @endif">
                 <a class="nav-link waves-effect waves-light" href="/">
+                <span class="fa fa-home"></span>
                 Home</a>
             </li>
             <li class="nav-item @if(Route::currentRouteName() == 'sponsorships' ) active @endif">
                 <a class="nav-link waves-effect waves-light" href="/sponsorships">
+                <span class="fa fa-seedling"></span>
                 Sponsorships</a>
             </li>
         </ul>
@@ -35,18 +37,22 @@
             @else
             <li class="nav-item @if(Route::currentRouteName() == 'home' ) active @endif">
                 <a class="nav-link waves-effect waves-light" href="/dashboard">
+                <span class="fa fa-dharmachakra"></span>
                 Dashboard</a>
             </li>
             <li class="nav-item @if(Route::currentRouteName() == 'history' ) active @endif">
                 <a class="nav-link waves-effect waves-light" href="/history">
+                <span class="fa fa-clock"></span>
                 History</a>
             </li>
             <li class="nav-item @if(Route::currentRouteName() == 'profile' ) active @endif">
                 <a class="nav-link waves-effect waves-light" href="/profile">
+                <span class="fa fa-user"></span>
                 Profile</a>
             </li>
             <li class="nav-item @if(Route::currentRouteName() == 'security' ) active @endif">
                 <a class="nav-link waves-effect waves-light" href="/security">
+                <span class="fa fa-shield-alt"></span>
                 Security</a>
             </li>
 

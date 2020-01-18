@@ -55,6 +55,13 @@
                 <span class="fa fa-shield-alt"></span>
                 Security</a>
             </li>
+            @if(Auth::user()->isAdmin())
+            <li class="nav-item @if(Route::currentRouteName() == 'cms' ) active @endif">
+                <a class="nav-link waves-effect waves-light" href="/cms">
+                <span class="fa fa-code"></span>
+                CMS</a>
+            </li>
+            @endif
 
             <li class="nav-item @if(Route::currentRouteName() == 'cart' ) active @endif">
                 <a class="nav-link waves-effect waves-light" href="/cart">

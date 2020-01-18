@@ -31,7 +31,7 @@
 <body>
     <div id="app">
         @include('inc/header')
-        <div class="p-0 pt-5 mt-5">
+        <div class="p-0 mt-4">
             @yield('content')
         </div>
         <!-- grass blades -->

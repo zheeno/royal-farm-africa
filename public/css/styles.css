@@ -122,24 +122,35 @@ li:hover>a{
 }
 
 .hero{
-    background-image: url("../img/hiker-man-colour-thumbnail.png");
-    background-position: right;
+    background-image: url("../img/Policy-uai-2880x864.jpg");
 }
 
 .hero-2{
-    background-image: url("../img/colour-thumbnail.png");
+    background-image: url("../img/Africa_Food_Security_16_10665114074-e1495462058839.jpg");
     background-position: left;
+}
+
+.mask{
+    background-color: #2121216b !important;
 }
 
 .hero,
 .hero-2{
-    min-height: 50vh;
-    background-color: #FFF;
+    /* min-height: 900px; */
+    /* background-color: #FFF; */
     top: -30px;
     position: relative;
     background-attachment: absolute;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
+}
+
+
+.hero-mask{
+    background-color: #000000 !important;
+}
+.hero-2-mask{
+    background-color: #fff !important;
 }
 
 .grass-blades{
@@ -467,12 +478,6 @@ body{
     }
     .align-end{
         text-align: left !important;
-    }
-    .hero-mask{
-        background-color: #bdbdbd4f !important;
-    }
-    .hero-2-mask{
-        background-color: #fff !important;
     }
     .side-bar{
         flex-basis: auto !important;

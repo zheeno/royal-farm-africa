@@ -54,4 +54,11 @@ class User extends Authenticatable
     public function allNotifs(){
         return $this->hasMany('App\Notification')->orderBy("id", "DESC");
     }
+
+    public function isAdmin(){
+        if($this->permission == "777"){
+            return true;
+        }
+        return false;
+    }
 }

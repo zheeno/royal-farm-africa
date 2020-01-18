@@ -65,6 +65,21 @@ Route::group(['middleware' => 'auth'], function(){
 
         Route::GET('/{id}', 'HomeController@openSponsorPage')->name('sponsorships');
     });
+
+
+    /** 
+     * 
+     * ADMIN ONLY ROUTES
+     * 
+     *  **/
+    Route::group(['middleware' => 'admin'], function(){
+        Route::group(['prefix' => 'cms'], function(){
+            Route::GET('/', 'CMSController@dashboard')->name('dashboard');
+
+            Route::GET('/category', 'CMSController@showCategory')->name('category');
+        });
+    });
+
 });
 
 // sponsorship group for guests

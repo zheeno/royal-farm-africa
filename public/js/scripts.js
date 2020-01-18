@@ -96,42 +96,42 @@ $(document).ready(function () {
 });
 
 
-// flutter Rave
-document.addEventListener("DOMContentLoaded", function (event) {
-    document.getElementById("ravePay").addEventListener("click", function (e) {
-        var PBFKey = "FLWPUBK_TEST-09433fc46747cb550ad9b6d7cc0f2c51-X";
+// // flutter Rave
+// document.addEventListener("DOMContentLoaded", function (event) {
+//     document.getElementById("ravePay").addEventListener("click", function (e) {
+//         var PBFKey = "FLWPUBK_TEST-09433fc46747cb550ad9b6d7cc0f2c51-X";
 
-        getpaidSetup({
-            PBFPubKey: PBFKey,
-            customer_email: "user@example.com",
-            customer_firstname: "Temi",
-            customer_lastname: "Adelewa",
-            custom_description: "Pay Internet",
-            custom_logo: "https://pbs.twimg.com/profile_images/915859962554929153/jnVxGxVj.jpg",
-            custom_title: "Communique Global System",
-            amount: 2000,
-            customer_phone: "234099940409",
-            country: "NG",
-            currency: "NGN",
-            txref: "rave-123456",
-            integrity_hash: "964eb106b1af3bd952903e6b54857fff",
-            onclose: function () { },
-            callback: function (response) {
-                var flw_ref = response.tx.flwRef; // collect flwRef returned and pass to a 					server page to complete status check.
-                console.log("This is the response returned after a charge", response);
-                if (
-                    response.tx.chargeResponseCode == "00" ||
-                    response.tx.chargeResponseCode == "0"
-                ) {
-                    // redirect to a success page
-                } else {
-                    // redirect to a failure page.
-                }
-            }
-        });
-    });
+//         getpaidSetup({
+//             PBFPubKey: PBFKey,
+//             customer_email: "user@example.com",
+//             customer_firstname: "Temi",
+//             customer_lastname: "Adelewa",
+//             custom_description: "Pay Internet",
+//             custom_logo: "https://pbs.twimg.com/profile_images/915859962554929153/jnVxGxVj.jpg",
+//             custom_title: "Communique Global System",
+//             amount: 2000,
+//             customer_phone: "234099940409",
+//             country: "NG",
+//             currency: "NGN",
+//             txref: "rave-123456",
+//             integrity_hash: "964eb106b1af3bd952903e6b54857fff",
+//             onclose: function () { },
+//             callback: function (response) {
+//                 var flw_ref = response.tx.flwRef; // collect flwRef returned and pass to a 					server page to complete status check.
+//                 console.log("This is the response returned after a charge", response);
+//                 if (
+//                     response.tx.chargeResponseCode == "00" ||
+//                     response.tx.chargeResponseCode == "0"
+//                 ) {
+//                     // redirect to a success page
+//                 } else {
+//                     // redirect to a failure page.
+//                 }
+//             }
+//         });
+//     });
 
-});
+// });
 
 
 // toggle notifs collapse
@@ -142,4 +142,25 @@ $(".notifColTog").on('click', function (evt) {
     $(this).removeClass('blue-text').addClass('disabled border p-2 blue white-text');
     $($(this).attr('data-pri-target')).collapse('show');
     $($(this).attr('data-sec-target')).collapse('hide');
+});
+
+// toggle dom elements using url queries
+$(".url-element-tog").onload(function () {
+    // check if auto toggle is on
+    var autoTog = $(this).attr("data-auto-toggle");
+    alert(autoTog);
+    if (autoTog.toLowerCase() == "true") {
+
+
+        var target = $(this).attr("data-target");
+        var togMode = $(this).attr("data-toggle-mode");
+        switch (togMode.toLowerCase()) {
+            case "modal":
+                $('#' + target).modal('show');
+                break;
+
+            default:
+                break;
+        }
+    }
 });

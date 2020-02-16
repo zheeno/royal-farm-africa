@@ -9,23 +9,10 @@
         <div class="col-md-5 p-2 checkout has-background"></div>
         <div class="col-md-7 p-md-2">
             <h1 class="fa-3x text bold mt-3 mt-md-0">Checkout</h1>
-            <h5 class="h5-responsive text">Kindly choose a payment option</h5>
-
             <form method="POST" action="/ravePay/checkout">
                 @csrf
                 <div class="row">
-                    <a class="wallet-pay-btn col-md-5 mx-auto shadow-lg mt-4 pt-3 pb-3 bg-green @if(HomeController::getWalletBalance() < $data['total_cap']) disabled @endif" style="border-radius:5px">
-                        <div class="row">
-                            <div class="col-12 align-text-center">
-                                <h3 class="h3-responsive white-text mb-0 align-text-center">Pay</h3>
-                                <h5 class="h5-responsive white-text bold align-text-center">&#8358;{{ number_format($data['total_cap'], 2) }}</h5>
-                                <span class="white-text">Using your virtual Wallet</span>
-                                <br /><small class="white-text">Wallet Balance: &#8358;{{ number_format(HomeController::getWalletBalance(), 2) }}</small>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="col-md-2 mx-auto pt-md-5 align-text-center mt-4"><span class="text bold">OR</span></div>
-                    <button type="submit" class="col-md-5 mx-auto shadow-lg mt-4 pt-3 pb-3 bg-midnight-blue" style="border-radius:5px">
+                    <button type="submit" class="col-md-5 shadow-lg mt-4 pt-3 pb-3 bg-midnight-blue" style="border-radius:5px">
                         <div class="row">
                             <div class="col-12 align-text-center">
                                 <h3 class="h3-responsive white-text mb-0 align-text-center">Pay Securely with</h3>

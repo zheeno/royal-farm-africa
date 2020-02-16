@@ -16,3 +16,14 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+ /** 
+     * 
+     * ADMIN ONLY ROUTES
+     * 
+     *  **/
+    Route::group(['middleware' => 'admin'], function(){
+        Route::group(['prefix' => 'cms'], function(){
+
+        });
+    });

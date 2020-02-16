@@ -20,6 +20,7 @@ class CreateSponsorshipReviewsTable extends Migration
             $table->boolean('is_author_sponsor')->default(false);
             $table->Integer('num_stars');
             $table->mediumText('review');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

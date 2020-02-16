@@ -21,49 +21,21 @@
     <div class="row">
         <div class="col-md-5 ml-auto border-right">
             <div class="row mt-3">
-                <div class="col-md-6">
-                    <h3 class="text h3-responsive ml-2 mb-0">Wallet Transactions</h3>
+                <div class="col-12">
+                    <h3 class="text h3-responsive ml-2 mb-0">Recent Transactions</h3>
                 </div>
-                <div class="col-md-6 align-text-right">
-                    <h5 class="mr-2 text h5-responsive mb-0 green-text bold">&#8358;{{ number_format(HomeController::getWalletBalance(), 2) }}</h5>
-                    <small class="mr-2 grey-text neg-mt-10">Wallet Balance</small><br />
-                    <button type="button" onClick="$('#addFundCol').collapse('toggle');$('#mainTranCol').collapse('toggle')" class="btn btn-sm green-btn m-0 neg-mt-10">Add Funds</button>
-                </div>
-            </div>
-            <div class="collapse" id="addFundCol">
-                <form method="POST" action="/ravePay">
-                    @csrf
-                    <h4 class="h4-responsive text bold">Add funds</h4>
-                    <div class="alert alert-info">Fund your wallet using our secure payment platform.
-                        Kindly note that {{ env('APP_NAME') }} will never store your card details. Your
-                        privacy is really important to us and we take it seriously.
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mx-auto">
-                            <div class="md-form">
-                                <label>Amount (&#8358;)</label>
-                                <input type="number" name="amount" class="form-control" required />
-                            </div>
-                            <div class="w-100 align-text-center p-3">
-                                <input type="hidden" name="redirect" value="{{ env('APP_URL') }}/ravePay/handler" required />
-                                <input type="hidden" name="desc" value="Wallet funding by user" required />
-                                <button type="submit" class="btn green-btn">Proceed</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
             <div class="collapse show" id="mainTranCol">
-                @if(count(Auth::user()->transactions) == 0)
+                @if(count(Auth::user()->recent_transacts) == 0)
                     <div class="has-background NOTRANSACT pt-3 pb-3"></div>
                     <div class="w-100 align-text-center pt-4 pb-5">
                         <h5 class="h5-responsive grey-text">No transactions found</h5>
                     </div>
                 @else
-                    @foreach(Auth::user()->transactions as $key => $transaction)
+                    @foreach(Auth::user()->recent_transacts as $key => $transaction)
                         <div class="row mb-2 ml-1 mr-1 shadow-sm pl-3 pr-3 pt-2 border-bottom white" id="{{ 'transact_'.$key }}">
                             <div class="col-12 p-0 overflow-x-hidden">
-                                <h5 class="h5-responsive mb-0 @if($transaction->is_credit) green-text bold @else red-text @endif">@if(!$transaction->is_credit){{'-'}}@endif&#8358;{{ number_format($transaction->amount ,2) }}</h5>
+                                <h5 class="h5-responsive mb-0 bold green-text">&#8358;{{ number_format($transaction->amount, 2) }}</h5>
                                 <small class="grey-text neg-mt-10" data-toggle="tooltip" title="{{$transaction->created_at}}"><time class="timeago" datetime="{{$transaction->created_at}}"></time></small>
                                 <p class="text neg-mt-10 m-0 fs-14">{!! $transaction->description !!}</p>
                             </div>

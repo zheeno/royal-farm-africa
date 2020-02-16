@@ -95,45 +95,6 @@ $(document).ready(function () {
     });
 });
 
-
-// // flutter Rave
-// document.addEventListener("DOMContentLoaded", function (event) {
-//     document.getElementById("ravePay").addEventListener("click", function (e) {
-//         var PBFKey = "FLWPUBK_TEST-09433fc46747cb550ad9b6d7cc0f2c51-X";
-
-//         getpaidSetup({
-//             PBFPubKey: PBFKey,
-//             customer_email: "user@example.com",
-//             customer_firstname: "Temi",
-//             customer_lastname: "Adelewa",
-//             custom_description: "Pay Internet",
-//             custom_logo: "https://pbs.twimg.com/profile_images/915859962554929153/jnVxGxVj.jpg",
-//             custom_title: "Communique Global System",
-//             amount: 2000,
-//             customer_phone: "234099940409",
-//             country: "NG",
-//             currency: "NGN",
-//             txref: "rave-123456",
-//             integrity_hash: "964eb106b1af3bd952903e6b54857fff",
-//             onclose: function () { },
-//             callback: function (response) {
-//                 var flw_ref = response.tx.flwRef; // collect flwRef returned and pass to a 					server page to complete status check.
-//                 console.log("This is the response returned after a charge", response);
-//                 if (
-//                     response.tx.chargeResponseCode == "00" ||
-//                     response.tx.chargeResponseCode == "0"
-//                 ) {
-//                     // redirect to a success page
-//                 } else {
-//                     // redirect to a failure page.
-//                 }
-//             }
-//         });
-//     });
-
-// });
-
-
 // toggle notifs collapse
 $(".notifColTog").on('click', function (evt) {
     // evt.preventDefault();
@@ -145,15 +106,12 @@ $(".notifColTog").on('click', function (evt) {
 });
 
 // toggle dom elements using url queries
-$(".url-element-tog").onload(function () {
+if (document.getElementById("url-element-tog")) {
     // check if auto toggle is on
-    var autoTog = $(this).attr("data-auto-toggle");
-    alert(autoTog);
+    var autoTog = $('#url-element-tog').attr("data-auto-toggle");
     if (autoTog.toLowerCase() == "true") {
-
-
-        var target = $(this).attr("data-target");
-        var togMode = $(this).attr("data-toggle-mode");
+        var target = $('#url-element-tog').attr("data-target");
+        var togMode = $('#url-element-tog').attr("data-toggle-mode");
         switch (togMode.toLowerCase()) {
             case "modal":
                 $('#' + target).modal('show');
@@ -162,5 +120,136 @@ $(".url-element-tog").onload(function () {
             default:
                 break;
         }
+    }
+};
+
+
+// initialize tinyMice
+tinymce.init({
+    selector: 'textarea.tinyMiceEditor',
+    plugins: [
+        'advlist autolink lists link image charmap print preview anchor',
+        'searchreplace visualblocks code fullscreen',
+        'insertdatetime media table paste code help wordcount'
+    ],
+    toolbar: 'undo redo | formatselect | ' +
+        ' bold italic backcolor | alignleft aligncenter ' +
+        ' alignright alignjustify | bullist numlist outdent indent |' +
+        ' removeformat | help',
+    toolbar_drawer: 'floating',
+});
+
+
+// form validation
+$('form').on('submit', function (evt) {
+    var form_id = $(this).attr("id");
+    var invalid = "", valid = 0, required = 0;
+    console.log('validating...' + form_id);
+    // loop through all input fields
+    $("#" + form_id + " input," + form_id + " textarea").each(function (index) {
+        // check if it is a required field
+        if ($(this).attr("require") != null) {
+            required++;
+            // check if required field has a content
+            if ($(this).val().length == 0) {
+                var text = $(this).prev().text();
+                if (text.length > 0) {
+                    invalid += `<li><strong>` + text + `</strong></li>`;
+                }
+            } else {
+                valid++;
+            }
+        }
+    });
+    if (required > valid) {
+        evt.preventDefault();
+        $("#errorAlertModal").modal("show");
+        $("#errorAlertModal .alert-danger").html(`
+        <h5 class='h5-responsive bold'>These fields are required</h5>
+        <ol class="pl-3">`+ invalid + `</ol>
+        <small>Kindly provide appropraite values for these fields to proceed.</small>`
+        );
+    }
+});
+
+// status toggler
+$(".spon-state-tog").on("click", function (e) {
+    e.preventDefault();
+    const id = $(this).attr("id");
+    const state = $(this).attr("data-state");
+    switch (id) {
+        case 'is_active_tog':
+            if (Number(state) == 1) {
+                // active state is true therefore,
+                // make it false,
+                // and make in_progress true
+                $(this).attr("data-state", 0);
+                $("#is_active_val").val(0);
+                $("#" + id + " .fa").removeClass("fa-toggle-on green-ic").addClass("fa-toggle-off red-ic");
+            } else {
+                // active state is false therefore,
+                // make it true, and make is_completed false,
+                $(this).attr("data-state", 1);
+                $("#is_active_val").val(1);
+                $("#is_active_val").val(1);
+                $("#" + id + " .fa").addClass("fa-toggle-on green-ic").removeClass("fa-toggle-off red-ic");
+                $("#is_completed_tog").attr("data-state", 0);
+                $("#is_completed_val").val(0);
+                $("#is_completed_tog .fa").removeClass("fa-toggle-on green-ic").addClass("fa-toggle-off red-ic");
+                $("#in_progress_tog").attr("data-state", 0);
+                $("#in_progress_val").val(0);
+                $("#in_progress_tog .fa").removeClass("fa-toggle-on green-ic").addClass("fa-toggle-off red-ic");
+
+            }
+            break;
+        case 'in_progress_tog':
+            if (Number(state) == 1) {
+                // in progress state is true therefore,
+                // make it false,
+                $(this).attr("data-state", 0);
+                $("#in_progress_val").val(0);
+                $("#" + id + " .fa").removeClass("fa-toggle-on green-ic").addClass("fa-toggle-off red-ic");
+            } else {
+                // in progress is false, therefore,
+                // make it true, make is_active false
+                // and make is_completed false
+                $(this).attr("data-state", 1);
+                $("#in_progress_val").val(1);
+                $("#" + id + " .fa").addClass("fa-toggle-on green-ic").removeClass("fa-toggle-off red-ic");
+                $("#is_completed_tog").attr("data-state", 0);
+                $("#is_completed_val").val(0);
+                $("#is_completed_tog .fa").removeClass("fa-toggle-on green-ic").addClass("fa-toggle-off red-ic");
+                $("#is_active_tog").attr("data-state", 0);
+                $("#is_active_val").val(0);
+                $("#is_active_tog .fa").removeClass("fa-toggle-on green-ic").addClass("fa-toggle-off red-ic");
+            }
+            break;
+        case "is_completed_tog":
+            // check if state is true
+            if (Number(state) == 1) {
+                // completed state is true therefore,
+                // make it false
+                $(this).attr("data-state", 0);
+                $("#is_completed_val").val(0);
+                $("#" + id + " .fa").removeClass("fa-toggle-on green-ic").addClass("fa-toggle-off red-ic");
+            } else {
+                // completed state is false therefore,
+                // make it true, and set in progress to false,
+                // and is active to false
+                $(this).attr("data-state", 1);
+                $("#is_completed_val").val(1);
+                $("#" + id + " .fa").addClass("fa-toggle-on green-ic").removeClass("fa-toggle-off red-ic");
+                // #########################
+                $("#in_progress_tog").attr("data-state", 0);
+                $("#in_progress_val").val(0);
+                $("#in_progress_tog .fa").removeClass("fa-toggle-on green-ic").addClass("fa-toggle-off red-ic");
+                $("#is_active_tog").attr("data-state", 0);
+                $("#is_active_val").val(0);
+                $("#is_active_tog .fa").removeClass("fa-toggle-on green-ic").addClass("fa-toggle-off red-ic");
+            }
+            break;
+
+        default:
+            break;
     }
 });

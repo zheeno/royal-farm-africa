@@ -230,7 +230,7 @@ class RaveController extends Controller
                                         $_sponsor->forceDelete();
                                         // notify user about the entry
                                         $link = "/sponsors/".$sponsor->id;
-                                        $message = "Welcome ".Auth::user()->name.", we are glad to have you as a sponsor. 
+                                        $message = "Hello ".Auth::user()->name.", we are glad to have you as a sponsor. 
                                         We have received your entry to sponsor ".number_format($item->units)." unit(s) of the <strong><a href='$link'>".$item->sponsorship->title."</a></strong> sponsorship. 
                                         For more information on how to keep track of the progress on the farms, kindly contact our support center.";
                                         $notif = new Notification();
@@ -240,6 +240,15 @@ class RaveController extends Controller
                                         $notif->seen = false;
                                         $notif->save();
                                     }
+                                    // ********************
+                                    // save transaction information
+                                    // ********************
+                                    $transact = new Wallet();
+                                    $transact->user_id = Auth::user()->id;
+                                    $transact->amount = $txData['amount'];
+                                    $transact->is_credit = false;
+                                    $transact->description = "Payment made with Tans Ref.: ".$flwref." as capital for sponsorship";
+                                    $transact->save();
                                     // notify the admin panel of the sponsor entry
                                     return redirect("success")
                                     ->with("title", "Weldone!!!")

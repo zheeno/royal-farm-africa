@@ -9,7 +9,7 @@
         <div class="row shadow-lg mb-3">
             <div class="col-12">
                 <div class="row">
-                    <div class="col-12 grey has-background" style="background-size:cover;background-image:url({{ $data['sponsor']->sponsorship->subcategory->cover_image_url }})">
+                    <div class="col-12 grey has-background" style="background-size:cover !important;background-image:url({{ $data['sponsor']->sponsorship->subcategory->cover_image_url }})">
                         @if($data['sponsor']->sponsorship->subcategory->video_url != null)
                             <a class="video-link-btn smoothScroll btn red ml-2 pt-2 pb-2 pl-3 pr-3" href="#videoPlayer"><span class="fa fa-video white-ic"></span></a>
                         @endif
@@ -42,16 +42,16 @@
                                     <h5 class="h5-responsive mb-0 text">{{ number_format($data['remSponsUnits']) }}</h5>
                                     <small class="neg-mt-10 grey-text">Avail. Units</small>
                                 @else
-                                    <span class="badge badge-danger">Sold Out</span>
+                                    <span class="badge badge-danger"><span style="font-size:18px">Sold Out</span></span>
                                 @endif
                             </div>
                             @endif
                             <div class="col-md-3 mx-auto pt-2">
                                 @if($data['sponsor']->sponsorship->in_progress)
-                                    <span class="badge badge-info">In Progress</span>
+                                    <span class="badge badge-info"><span style="font-size:18px">In Progress</span></span>
                                 @else
                                     @if($data['sponsor']->sponsorship->is_completed)
-                                    <span class="badge badge-success">Completed</span>
+                                    <span class="badge badge-success"><span style="font-size:18px">Completed</span></span>
                                     @endif
                                 @endif
                             </div>
@@ -193,22 +193,30 @@
             <div class="col-md-5 p-3 p-md-4 shadow-lg mb-3 @if($index % 2) ml-auto @else mr-auto @endif">
                 <div class="row">
                     <div class="col-12 border-bottom">
-                        @if($review->author->profile)
-                            @if(strlen($review->author->profile->avatar_url) == 0)
-                            <button class="btn bg-green btn-sm-rounded float-left">
-                                <span class="white-text">{{ HomeController::getInitials($review->author->name) }}</span>
-                            </button>
+                        <div class="row">
+                            <div class="col-2 align-text-center">
+                            @if($review->author->profile)
+                                @if(strlen($review->author->profile->avatar_url) == 0)
+                                <button class="btn bg-green btn-sm-rounded float-left">
+                                    <span class="white-text">{{ HomeController::getInitials($review->author->name) }}</span>
+                                </button>
+                                @else
+                                <img src="{{ $review->author->profile->avatar_url }}" class="img-responsive btn-sm-rounded" />
+                                @endif
                             @else
-                            <img src="{{ $review->author->profile->avatar_url }}" class="img-responsive btn-sm-rounded" />
+                                <button class="btn bg-green btn-sm-rounded float-left">
+                                    <span class="white-text">{{ HomeController::getInitials($review->author->name) }}</span>
+                                </button>
                             @endif
-                        @else
-                            <button class="btn bg-green btn-sm-rounded float-left">
-                                <span class="white-text">{{ HomeController::getInitials($review->author->name) }}</span>
-                            </button>
-                        @endif
-                        &nbsp;
-                        <strong class="text">{{ $review->author->name }}</strong>
-                        @if($review->is_author_sponsor)<br /><small class="neg-mt-10 ml-2 grey-text">Sponsor</small>@endif
+                            </div>
+                            <div class="col-10">
+                                <strong class="text">{{ $review->author->name }}</strong>
+                                <div class="row">
+                                    @if($review->is_author_sponsor)<div class="col"><small class="neg-mt-10 grey-text">Sponsor</small></div>@endif
+                                    <div class="col align-text-right ml-auto"><span class="neg-mt-10">{!! HomeController::showStars($review->num_stars) !!}</span></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -217,13 +225,10 @@
                     </div>
                 </div>
                 <div class="row review-footer">
-                    <div class="col-md-6">
+                    <div class="col-12 align-text-right">
                         <small class="grey-text">
                             <time class="timeago" datetime="{{ $review->created_at }}"></time>
                         </small>
-                    </div>
-                    <div class="col-md-5 align-text-right">
-                        {!! HomeController::showStars($review->num_stars) !!}
                     </div>
                 </div>
             </div>

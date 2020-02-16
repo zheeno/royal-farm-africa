@@ -41,17 +41,6 @@
                     @endif
                 </div>
                 <div class="col-md-3 mx-auto">
-                    <!-- account stats -->
-                    
-                    <div class="row shadow pb-5 bg-green"> 
-                        <div class="col-12 p-3">
-                            <h5 class="h5-responsive white-text bold">Your Wallet</h5> 
-                        </div>
-                        <div class="mt-3 mb-3 col-12 align-text-center pl-2 pr-2">
-                            <h3 class="fa-2x align-text-center white-text mb-0">&#8358;{{ number_format(HomeController::getWalletBalance(), 2) }}</h3>
-                            <small class="white-text">Avail. Balance</small>
-                        </div>
-                    </div>
                     <!-- more stats -->
                     <div class="row shadow mt-4 mb-5 pt-5">
                         <div class="col-12">
@@ -82,8 +71,10 @@
         </div>
         <?php $delay = 0.6; ?>
         @foreach($data['featured_sponsorships'] as $item)
-            @include('inc/itemCard')
-            <?php $delay += 0.6; ?>
+            @if($item->subcategory != null)
+                @include('inc/itemCard')
+                <?php $delay += 0.6; ?>
+            @endif
         @endforeach
     </div>
     @endif

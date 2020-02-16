@@ -6,6 +6,16 @@
 
 @section('content')
     <div class="container-fluid">
+            @if(@session('error'))
+            <div class="row mb-3">
+                <div class="col-md-8 mx-auto">
+                    <div class="alert alert-danger">
+                        <span class="fa fa-check-circle"></span>
+                        <span>{!! @session('error') !!}</span>
+                    </div>
+                </div>
+            </div>
+            @endif
         <div class="row grey lighten-3 p-3 mb-4">
             <div class="col-md-10 mx-auto mt-4 align-text-center">
                 <a href="/sponsorships" class="@if($data['current_cat_id'] == 0)green-btn @else text shadow-none @endif btn mb-0 btn-sm ml-1 mr-1">All</a>
@@ -28,8 +38,10 @@
                 </div>
                 <?php $delay = 0.6 ?>
                 @foreach($data['sponsorships'] as $item)
+                @if($item->subcategory != null)
                     @include('inc/itemCard')
                     <?php $delay += 0.6 ?>
+                @endif
                 @endforeach
             </div>
             <div class="row mt-3">
@@ -40,9 +52,6 @@
         @else
             <div class="row pt-5">
                 <div class="col-12 has-background NORESULT"></div>
-                <div class="col-12 align-text-center">
-                    <h3 class="h3-responsive text">Your cart is empty</h3>
-                </div>
             </div>
         @endif
 

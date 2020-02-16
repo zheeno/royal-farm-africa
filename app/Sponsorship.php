@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Sponsorship extends Model
 {
+    use SoftDeletes;
+
     public function location()
     {
         return $this->hasOne('App\Location', 'id', 'location_id');

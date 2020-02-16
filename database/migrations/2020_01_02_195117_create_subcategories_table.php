@@ -23,6 +23,7 @@ class CreateSubcategoriesTable extends Migration
             $table->mediumText('cover_image_url')->nullable();
             $table->String('video_tag_line')->nullable();
             $table->mediumText('video_url')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

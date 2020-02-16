@@ -54,13 +54,17 @@ class HomeController extends Controller
     // showSingleSponsorship
     public function showSingleSponsorship($id){
         $sponsorship = Sponsorship::findorfail($id);
-        // check of user has added the item to cart in the current session
-        $cart_item = SponsorCart::where('sponsorship_id', $id)->where("user_id", Auth::user()->id)->where("session_id", Session::getId())->first();
-        return view('sponsorshipPage')->with('data', [
-            "sponsorship" => $sponsorship,
-            "sponsored_units" => $this->getSponsoredUnits($sponsorship),
-            "cart_item" => $cart_item,
-        ]);
+        if($sponsorship->category && $sponsorship->subcategory){
+            // check of user has added the item to cart in the current session
+            $cart_item = SponsorCart::where('sponsorship_id', $id)->where("user_id", Auth::user()->id)->where("session_id", Session::getId())->first();
+            return view('sponsorshipPage')->with('data', [
+                "sponsorship" => $sponsorship,
+                "sponsored_units" => $this->getSponsoredUnits($sponsorship),
+                "cart_item" => $cart_item,
+            ]);
+        }else{
+            abort(404);
+        }
     }
 
     // addToSponsorCart
@@ -70,47 +74,52 @@ class HomeController extends Controller
         $units = intval($request->input('selected_units'));
         // get data about the sponsorship
         $sponsorship = Sponsorship::findorfail($spons_id);
-        $capital = $units * $sponsorship->price_per_unit;
-        // check if item is available
-        // check if sponsorship is active
-        if($sponsorship->is_active && !$sponsorship->is_completed){
-            // check if units are available
-            $remSponsUnits = $sponsorship->total_units - $this->getSponsoredUnits($sponsorship);
-            if($remSponsUnits >= $units){
-                // ensure that the selected units is valid
-                if($units > 0){
-                    // get data about the sponsorship
-                    $sponsorship = Sponsorship::findorfail($spons_id);
-                    // check if use has the item in cart
-                    $check = SponsorCart::where("user_id", Auth::user()->id)->where("sponsorship_id", $spons_id)->where("session_id", $session_id)->first();
-                    if($check){
-                        // update cart
-                        $cart = SponsorCart::find($check->id);
+        if($sponsorship->category && $sponsorship->subcategory){
+            $capital = $units * $sponsorship->price_per_unit;
+            // check if item is available
+            // check if sponsorship is active
+            if($sponsorship->is_active && !$sponsorship->is_completed){
+                // check if units are available
+                $remSponsUnits = $sponsorship->total_units - $this->getSponsoredUnits($sponsorship);
+                if($remSponsUnits >= $units){
+                    // ensure that the selected units is valid
+                    if($units > 0){
+                        // get data about the sponsorship
+                        $sponsorship = Sponsorship::findorfail($spons_id);
+                        // check if use has the item in cart
+                        $check = SponsorCart::where("user_id", Auth::user()->id)->where("sponsorship_id", $spons_id)->where("session_id", $session_id)->first();
+                        if($check){
+                            // update cart
+                            $cart = SponsorCart::find($check->id);
+                        }else{
+                            // add to cart
+                            $cart = new SponsorCart();
+                        }
+                        $cart->user_id = Auth::user()->id;
+                        $cart->session_id = $session_id;
+                        $cart->sponsorship_id = $spons_id;
+                        $cart->units = (int)$units;
+                        $cart->price_per_unit = $sponsorship->price_per_unit;
+                        $cart->expected_return_pct = $sponsorship->expected_returns_pct;
+                        $cart->total_capital = $capital;
+                        $cart->save();
+                        
+                        return redirect("/cart")->with("success", "Item added");
                     }else{
-                        // add to cart
-                        $cart = new SponsorCart();
+                        // invalid number of units selected
+                        return redirect("/sponsorships/$spons_id")->with("error", "Invalid number of units selected");
                     }
-                    $cart->user_id = Auth::user()->id;
-                    $cart->session_id = $session_id;
-                    $cart->sponsorship_id = $spons_id;
-                    $cart->units = (int)$units;
-                    $cart->price_per_unit = $sponsorship->price_per_unit;
-                    $cart->expected_return_pct = $sponsorship->expected_returns_pct;
-                    $cart->total_capital = $capital;
-                    $cart->save();
-                    
-                    return redirect("/cart")->with("success", "Item added");
                 }else{
-                    // invalid number of units selected
-                    return redirect("/sponsorships/$spons_id")->with("error", "Invalid number of units selected");
+                    // no units available
+                    return redirect("/sponsorships/$spons_id")->with("error", "Insufficient units available");
                 }
             }else{
-                // no units available
-                return redirect("/sponsorships/$spons_id")->with("error", "Insufficient units available");
+                // sponsorship is in active
+                return redirect("/sponsorships/$spons_id")->with("error", "Sponsorship is in-active");
             }
         }else{
             // sponsorship is in active
-            return redirect("/sponsorships/$spons_id")->with("error", "Sponsorship is in-active");
+            return redirect("/sponsorships")->with("error", "Sponsorship may be in-active");
         }
     }
 
@@ -283,23 +292,27 @@ class HomeController extends Controller
     public function openSponsorPage($id){
         // get sponsor data
         $sponsor = Sponsor::findorfail($id);
-        if($sponsor->user_id == Auth::user()->id){
-            $remSponsUnits = $sponsor->sponsorship->total_units - $this->getSponsoredUnits($sponsor->sponsorship);
-            // get other sponsors for this sponsorship
-            $oth_sponsors = Sponsor::where("sponsorship_id", $sponsor->sponsorship->id)->get();
-            // loop through to get more data
-            $tot_cap = 0;
-            foreach ($oth_sponsors as $o_spon) {
-                $tot_cap += $o_spon->total_capital;
-            } 
-            return view('sponsorPage')->with('data', [
-                "sponsor" => $sponsor,
-                "other_sponsors" => $oth_sponsors,
-                "remSponsUnits" => $remSponsUnits,
-                "claimed_units" => $this->getSponsoredUnits($sponsor->sponsorship),
-                "cap_raised" => $tot_cap,
-                "ratings" => $this->calcRating($sponsor->sponsorship),
-            ]);
+        if($sponsor->sponsorship && $sponsor->sponsorship->category && $sponsor->sponsorship->subcategory){
+            if($sponsor->user_id == Auth::user()->id){
+                $remSponsUnits = $sponsor->sponsorship->total_units - $this->getSponsoredUnits($sponsor->sponsorship);
+                // get other sponsors for this sponsorship
+                $oth_sponsors = Sponsor::where("sponsorship_id", $sponsor->sponsorship->id)->get();
+                // loop through to get more data
+                $tot_cap = 0;
+                foreach ($oth_sponsors as $o_spon) {
+                    $tot_cap += $o_spon->total_capital;
+                } 
+                return view('sponsorPage')->with('data', [
+                    "sponsor" => $sponsor,
+                    "other_sponsors" => $oth_sponsors,
+                    "remSponsUnits" => $remSponsUnits,
+                    "claimed_units" => $this->getSponsoredUnits($sponsor->sponsorship),
+                    "cap_raised" => $tot_cap,
+                    "ratings" => $this->calcRating($sponsor->sponsorship),
+                ]);
+            }else{
+                abort(404);
+            }
         }else{
             abort(404);
         }

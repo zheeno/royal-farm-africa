@@ -4,9 +4,10 @@
         $sponsoredUnits += $sponsor->units;
     }
 ?>
-<a href="/sponsorships/{{$item->id}}" class="featured-card mb-3 col-md-3 p-0 ml-5 mr-auto my-4 shadow wow fadeInRight" data-wow-delay="{{ $delay }}s" data-wow-duration="4s">
+
+<a href="/cms/sponsorships/{{$item->id}}" class="featured-card mb-3 col-md-3 p-0 mx-auto shadow white">
     <div class="card-img-container @if($item->total_units > $sponsoredUnits && $item->is_active == true) bg-img-colored @else bg-img-luminous @endif p-5 white" style="background-image:url('{{ $item->subcategory->cover_image_url }}')"></div>
-    <div class="p-3">
+    <div class="p-5 mb-4 mx-1">
         <div class="row">
             <div class="col-6">
                 <strong class="text">{{ $item->title }}</strong>

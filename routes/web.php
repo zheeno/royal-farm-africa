@@ -75,8 +75,36 @@ Route::group(['middleware' => 'auth'], function(){
     Route::group(['middleware' => 'admin'], function(){
         Route::group(['prefix' => 'cms'], function(){
             Route::GET('/', 'CMSController@dashboard')->name('dashboard');
+            Route::GET('/getSponsorsList', 'CMSController@getSponsorsList');
 
-            Route::GET('/category', 'CMSController@showCategory')->name('category');
+            // categories group
+            Route::group(['prefix' => 'categories'], function(){
+                Route::GET('/', 'CMSController@showCategories')->name('category');
+                Route::POST('/new', 'CMSController@newCategory');
+                Route::POST('/update', 'CMSController@updateCategory');
+                Route::POST('/delete', 'CMSController@deleteCategory');
+                Route::POST('/restore', 'CMSController@restoreCategory');
+                Route::GET('/{id}', 'CMSController@openSelectedCategory')->name('category');
+                Route::GET('/{cat_id}/{sub_id}', 'CMSController@openSelectedSubCategory')->name('category');
+                // subcategories group
+                Route::group(['prefix' => 'sub'], function(){
+                    Route::POST('/new', 'CMSController@newSubCategory');
+                    Route::POST('/update', 'CMSController@updateSubCategory');
+                    Route::POST('/delete', 'CMSController@deleteSubCategory');
+                    Route::POST('/restore', 'CMSController@restoreSubCategory');
+                });
+            });
+
+            // sponsorships group
+            Route::group(['prefix' => 'sponsorships'], function(){
+                Route::POST('/new', 'CMSController@newSponsorship');
+                Route::GET('/{id}', 'CMSController@openSponsorshipPage');
+                // update setup
+                Route::group(['prefix' => 'update'], function(){
+                    Route::POST('/status', 'CMSController@updateSponsorshipStatus');
+
+                });
+            });
         });
     });
 

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div class="container-fluid">
-    
+    <!-- Hero -->
     <div class="row ">
         <div class="col-12 p-0">
             <div class="jumbotron card shadow-none card-image hero p-0">
@@ -81,8 +81,8 @@
     </div> -->
     <!-- current figures -->
     <div class="row py-5 mb-4">
-        <div class="col-12 ml-md-4 ">
-        <h1 class="fa-2x bold text mb-3">Statistics</h1>
+        <div class="col-12 ml-md-4 mb-4">
+            <h1 class="fa-2x bold text mb-3 align-text-center">Statistics</h1>
         </div>
         <!-- farmers -->
         <div class="col-md-2 mx-auto align-text-center pb-3 shadow overflow-hidden my-2">
@@ -115,6 +115,20 @@
             </div>
             <h4 class="h4-responsive bold mb-0 green-text">&#8358;{{ number_format(300, 2) }}</h4>
             <span class="bold text">Profits</span>
+        </div>
+    </div>
+<!--  -->
+    <div class="row ">
+        <div class="col-12 p-0">
+            <div class="jumbotron card shadow-none card-image hero-2 fixed-background p-0">
+                <div class="mask py-md-5 px-md-5">
+                    <div class="row text-white py-5 px-4 my-5">
+                        <div class="col-md-5 ml-auto">
+                            <h1 class="fa-3x bold mb-0 white-text wow fadeIn" data-wow-delay="0.6s"  data-wow-duration="5s">Make profits while impacting farmers greatly</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- featured sponsorships -->

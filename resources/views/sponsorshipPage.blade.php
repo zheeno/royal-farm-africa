@@ -8,7 +8,7 @@
             <div class="col-10 mx-auto white mx-auto shadow-lg mt-5 mb-3">
                 <div class="row">
                     <div class="col-md-4 p-0">
-                        <div class="lg-card-img-container p-5 white" style="background-image:url({{ $data['sponsorship']->subcategory->cover_image_url }})">
+                        <div class="lg-card-img-container p-5 white" style="background-size:cover !important;background-image:url({{ $data['sponsorship']->subcategory->cover_image_url }});">
                             <!--  -->
                         </div>
                     </div>

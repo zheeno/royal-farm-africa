@@ -30,22 +30,31 @@ class GuestController extends Controller
     public function showSponsorships(Request $request){
         $id = $request->input("id");
         $input = $request->input();
-        $category = Category::where("category_name", "Agriculture")->first();
+        $category = Category::first();
         if($category){
-            $subcategories = Subcategory::where("category_id", $category->id)->orderBy("sub_category_name", "ASC")->get();
-            $sponsorships = []; $curCatId = 0; $curSubCat = null;
+            $subcategories = Subcategory::orderBy("sub_category_name", "ASC")->get();
+            $sponsorships = []; $curCatId = 0; $curSubCat = null; $subs = [];
+            foreach ($subcategories as $key => $subCat) {
+                // get category
+                $cat = Category::where("id", $subCat->category_id)->first();
+                if($cat){
+                    if($subCat){
+                        array_push($subs, $subCat);
+                    }
+                }
+            }
             if($id == null){
                 // get all sponsorships
                 $sponsorships = Sponsorship::where("category_id", $category->id)->where('in_progress', false)->where('is_completed', false)->orderBy('id', 'DESC')->paginate(12);
             }else{
                 // get wrt selected subcategory
-                $sponsorships = Sponsorship::where("category_id", $category->id)->where('in_progress', false)->where('is_completed', false)->where('sub_category_id', $id)->orderBy('id', 'DESC')->paginate(12);
+                $sponsorships = Sponsorship::where("category_id", $category->id)->where('sub_category_id', $id)->where('in_progress', false)->where('is_completed', false)->orderBy('id', 'DESC')->paginate(12);
                 $curCatId = $id;
                 $curSubCat = Subcategory::findorfail($curCatId);
             }
             $sponsorships->appends($input);
             return view('sponsorships')->with('data', [
-                "sub_cats" => $subcategories,
+                "sub_cats" => $subs,
                 "sponsorships" => $sponsorships,
                 "current_cat_id" => $curCatId,
                 "cur_sub_category" => $curSubCat,

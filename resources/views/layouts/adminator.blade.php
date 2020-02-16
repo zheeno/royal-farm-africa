@@ -118,6 +118,8 @@
           @yield('content')
         </div>
       </main>
+      @include('cms/inc/errorAlertModal')
+
 
       <!-- ### $App Screen Footer ### -->
       <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
@@ -134,11 +136,14 @@
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
       <!-- Bootstrap core JavaScript -->
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-      <!-- MDB core JavaScript -->
+      <!-- Tiny mice -->
+      <script src="https://cdn.tiny.cloud/1/x9v7l8yleqlv5fhsfbipacl93girudvql99u0wp7a64b8rix/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+     <!-- MDB core JavaScript -->
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/js/mdb.min.js"></script>
       <script type="text/javascript" src="{{ asset('js/timeago.js') }}"></script>
       <script type="text/javascript" src="{{ asset('js/scripts.js') }}"></script>
-    </div>
+      <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+     </div>
   </div>
 </body>
 

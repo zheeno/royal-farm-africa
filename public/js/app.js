@@ -68843,7 +68843,9 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
  */
 
 
-__webpack_require__(/*! ./components/WalletTransactConfirmation */ "./resources/js/components/WalletTransactConfirmation.js");
+__webpack_require__(/*! ./components/SponsorshipPayouts */ "./resources/js/components/SponsorshipPayouts.js");
+
+__webpack_require__(/*! ./components/SponsorsList */ "./resources/js/components/SponsorsList.js");
 
 /***/ }),
 
@@ -68892,20 +68894,22 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
-/***/ "./resources/js/components/WalletTransactConfirmation.js":
-/*!***************************************************************!*\
-  !*** ./resources/js/components/WalletTransactConfirmation.js ***!
-  \***************************************************************/
+/***/ "./resources/js/components/SponsorsList.js":
+/*!*************************************************!*\
+  !*** ./resources/js/components/SponsorsList.js ***!
+  \*************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return WalletTransactConfirmation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SponsorsList; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -68916,9 +68920,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -68927,43 +68931,301 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var WalletTransactConfirmation =
+
+var SponsorsList =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(WalletTransactConfirmation, _Component);
+  _inherits(SponsorsList, _Component);
 
-  function WalletTransactConfirmation() {
-    _classCallCheck(this, WalletTransactConfirmation);
+  function SponsorsList(props) {
+    var _this;
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(WalletTransactConfirmation).apply(this, arguments));
+    _classCallCheck(this, SponsorsList);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SponsorsList).call(this, props));
+    _this.state = {
+      sponId: _this.props.sponId,
+      sponsors: [],
+      isLoading: true,
+      requestSuccess: false,
+      error: null
+    };
+    _this.getSponsors = _this.getSponsors.bind(_assertThisInitialized(_this));
+    return _this;
   }
 
-  _createClass(WalletTransactConfirmation, [{
+  _createClass(SponsorsList, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.getSponsors();
+    }
+  }, {
+    key: "getSponsors",
+    value: function getSponsors() {
+      var _this2 = this;
+
+      this.setState({
+        isLoading: true
+      });
+      console.log("spon_id", this.state.sponId);
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/cms/getSponsorsList?spon_id=' + this.state.sponId).then(function (response) {
+        var data = response.data;
+
+        _this2.setState({
+          isLoading: false,
+          requestSuccess: true,
+          sponsors: data.sponsors,
+          error: null
+        });
+      })["catch"](function (errors) {
+        _this2.setState({
+          isLoading: false,
+          sponsors: [],
+          error: errors.message,
+          requestSuccess: false
+        });
+
+        console.log(errors);
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container"
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, this.state.isLoading ? null : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container-fluid mb-5"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row justify-content-center"
+        className: "row mb-3"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-8"
+        className: "navbar col-12 green darken-3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+        className: "h3-responsive white-text"
+      }, "Sponsors"))), this.state.sponsors.length == 0 ? // no sponsors
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "card"
+        className: "col-12 has-background NORESULT"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-12 align-text-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
+        className: "h4-responsive"
+      }, "No sponsors found"))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "card-header"
-      }, "Example Component"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "card-body"
-      }, "I'm an example component!")))));
+        className: "col-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        className: "list-group"
+      }, this.state.sponsors.map(function (sponsor, i) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          key: i,
+          className: "list-group-item"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-2"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          className: "img-responsive btn-sm-rounded grey lighten-3",
+          src: sponsor.user.profile.avatar_url
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-7"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          style: {
+            fontSize: 18
+          }
+        }, sponsor.user.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          style: {
+            fontSize: 15
+          }
+        }, sponsor.user.email, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), sponsor.user.profile.phone_no)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-3 pt-1 align-text-right"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          style: {
+            fontSize: 16
+          }
+        }, sponsor.units, " Unit", sponsor.units > 1 ? 's' : null), sponsor.has_received_returns ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "badge badge-success"
+        }, "Returns Received") : null)));
+      }))))));
     }
   }]);
 
-  return WalletTransactConfirmation;
+  return SponsorsList;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 
 
-if (document.getElementById('walletTransactConfirmation')) {
-  react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WalletTransactConfirmation, null), document.getElementById('walletTransactConfirmation'));
+if (document.getElementById('sponsorsList')) {
+  var spon_id = document.getElementById('sponsorsList').getAttribute("data-spon-id");
+  react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SponsorsList, {
+    sponId: spon_id
+  }), document.getElementById('sponsorsList'));
+}
+
+/***/ }),
+
+/***/ "./resources/js/components/SponsorshipPayouts.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/SponsorshipPayouts.js ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SponsorshipPayouts; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+var SponsorshipPayouts =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(SponsorshipPayouts, _Component);
+
+  function SponsorshipPayouts(props) {
+    var _this;
+
+    _classCallCheck(this, SponsorshipPayouts);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SponsorshipPayouts).call(this, props));
+    _this.state = {
+      sponId: _this.props.sponId,
+      sponsors: [],
+      isLoading: true,
+      requestSuccess: false,
+      error: null
+    };
+    _this.getSponsors = _this.getSponsors.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(SponsorshipPayouts, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.getSponsors();
+    }
+  }, {
+    key: "getSponsors",
+    value: function getSponsors() {
+      var _this2 = this;
+
+      this.setState({
+        isLoading: true
+      });
+      console.log("spon_id", this.state.sponId);
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/cms/getSponsorshipPayouts?spon_id=' + this.state.sponId).then(function (response) {
+        var data = response.data;
+
+        _this2.setState({
+          isLoading: false,
+          requestSuccess: true,
+          sponsors: data.sponsors,
+          error: null
+        });
+      })["catch"](function (errors) {
+        _this2.setState({
+          isLoading: false,
+          sponsors: [],
+          error: errors.message,
+          requestSuccess: false
+        });
+
+        console.log(errors);
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, this.state.isLoading ? null : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container-fluid mb-5"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row mb-3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "navbar col-12 green darken-3"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+        className: "h3-responsive white-text"
+      }, "Sponsorship Payouts"))), this.state.sponsors.length == 0 ? // no sponsors
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-12 has-background NORESULT"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-12 align-text-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
+        className: "h4-responsive"
+      }, "No sponsors found"))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        className: "list-group"
+      }, this.state.sponsors.map(function (sponsor, i) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          key: i,
+          className: "list-group-item"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-2"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          className: "img-responsive btn-sm-rounded grey lighten-3",
+          src: sponsor.user.profile.avatar_url
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-7"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          style: {
+            fontSize: 18
+          }
+        }, sponsor.user.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          style: {
+            fontSize: 15
+          }
+        }, sponsor.user.email, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), sponsor.user.profile.phone_no)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-3 pt-1 align-text-right"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          style: {
+            fontSize: 16
+          }
+        }, sponsor.units, " Unit", sponsor.units > 1 ? 's' : null), sponsor.has_received_returns ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "badge badge-success"
+        }, "Returns Received") : null)));
+      }))))));
+    }
+  }]);
+
+  return SponsorshipPayouts;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
+
+if (document.getElementById('sponsorshipPayouts')) {
+  var spon_id = document.getElementById('sponsorshipPayouts').getAttribute("data-spon-id");
+  react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SponsorshipPayouts, {
+    sponId: spon_id
+  }), document.getElementById('sponsorshipPayouts'));
 }
 
 /***/ }),

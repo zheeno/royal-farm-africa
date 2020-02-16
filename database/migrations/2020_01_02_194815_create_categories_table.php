@@ -21,6 +21,7 @@ class CreateCategoriesTable extends Migration
             $table->mediumText('description_2')->nullable();
             $table->mediumText('cover_image_url')->nullable();
             $table->mediumText('video_url')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

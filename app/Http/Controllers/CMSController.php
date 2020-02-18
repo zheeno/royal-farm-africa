@@ -9,6 +9,9 @@ use App\Subcategory;
 use App\Sponsorship;
 use App\Sponsor;
 use App\Location;
+use App\Profile;
+use App\User;
+use App\Notification;
 
 class CMSController extends Controller
 {
@@ -299,5 +302,86 @@ class CMSController extends Controller
         return json_encode([
             "sponsors" => $sponsors_data,
         ]);
+    }
+
+    // getSponsorshipPayoutsData
+    public function getSponsorshipPayoutsData(Request $request){
+        $id = $request->input('spon_id');
+        $sponsorship = Sponsorship::findorfail($id);
+        $sponsors = json_decode($this->getSponsorsList($request), true);
+
+        return json_encode([
+            "sponsorship" => $sponsorship,
+            "sponsors_data" => $sponsors
+        ]);
+
+    }
+
+    // sponsorsPayoutInitiate
+    public function sponsorsPayoutInitiate(Request $request){
+        $id = $request->input('spon_id');
+        $sponsors_ids = $request->input('sponsors');
+        $sponsors_ids = explode(",", $sponsors_ids);
+        $useDefault = boolval($request->input('useDefault'));
+
+        $response = json_decode($this->getSponsorshipPayoutsData($request));
+        $sponsorship = $response->sponsorship;
+        $sponsors = $response->sponsors_data->sponsors;
+
+        // loop through sponsors_ids
+        foreach ($sponsors_ids as $key => $sponsor_id) {
+            $sponsor = Sponsor::find($sponsor_id);
+            // check if sponsor has not received payout
+            if(!$sponsor->has_received_returns){
+                if($useDefault){
+                    $exp_pct = $sponsor->expected_return_pct;
+                }else{
+                    $exp_pct = floatval($request->input('exp_ret_pct'));
+                }
+                // check if user has setup their profile 
+                $profile = Profile::where("user_id", $sponsor->user_id)->first();
+                if($profile){
+                    // get sponsored units
+                    $units = $sponsor->units;
+                    $capital = $sponsor->total_capital;
+                    $returns = $capital + ($capital * $exp_pct);
+                    // get sponsor from database
+                    $sponsor_data = Sponsor::where("id", $sponsor->id)->first();
+                    if($sponsor_data){
+                        // modify data accordingly
+                        $sponsor_data->actual_returns_received = $returns;
+                        $sponsor_data->has_received_returns = true;
+                        $sponsor_data->save();
+                        // add new entry into transactions record table
+                        $transact = new Wallet();
+                        $transact->user_id = $sponsor->user_id;
+                        $transact->amount = $returns;
+                        $transact->is_credit = true;
+                        $transact->description = "-- CREDIT ALERT --<br /> You have been paid a total of NGN ".number_format($returns, 2)." into your bank account (".$profile->account_number.")";
+                        $transact->save();
+                        // notify user about the payout
+                        $message = "PAYOUT NOTIFICATION<br />".$sponsorship->title." sponsorship has come to an end, and we are glad to inform you that you have been credited a total of  NGN ".number_format($returns, 2)." into your bank account (".$profile->account_number.").<br />We look forward to doing greater things with you.";
+                        $notif = new Notification();
+                        $notif->user_id = $sponsor->user_id;
+                        $notif->message = $message;
+                        $notif->link = null;
+                        $notif->seen = false;
+                        $notif->save();
+                    }
+                }else{
+                    // notify user on the issue
+                    $message = "Hello, we are currently attempting to make payouts to our sponsors and we noticed that you have not setup your bank account information.
+                    Kindly do so and contact our support center. Thank you.";
+                    $notif = new Notification();
+                    $notif->user_id = $sponsor->user_id;
+                    $notif->message = $message;
+                    $notif->link = null;
+                    $notif->seen = false;
+                    $notif->save();
+                }
+            }
+        }
+        $response_update = json_decode($this->getSponsorshipPayoutsData($request));
+        return json_encode($response_update, true);
     }
 }

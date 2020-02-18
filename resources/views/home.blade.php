@@ -35,7 +35,7 @@
                     @foreach(Auth::user()->recent_transacts as $key => $transaction)
                         <div class="row mb-2 ml-1 mr-1 shadow-sm pl-3 pr-3 pt-2 border-bottom white" id="{{ 'transact_'.$key }}">
                             <div class="col-12 p-0 overflow-x-hidden">
-                                <h5 class="h5-responsive mb-0 bold green-text">&#8358;{{ number_format($transaction->amount, 2) }}</h5>
+                                <h5 class="h5-responsive mb-0 bold @if($transaction->is_credit)green-text @else red-text @endif">&#8358;{{ number_format($transaction->amount, 2) }}</h5>
                                 <small class="grey-text neg-mt-10" data-toggle="tooltip" title="{{$transaction->created_at}}"><time class="timeago" datetime="{{$transaction->created_at}}"></time></small>
                                 <p class="text neg-mt-10 m-0 fs-14">{!! $transaction->description !!}</p>
                             </div>
@@ -63,7 +63,7 @@
                 @endif
             </div>
             <!-- unread notifs -->
-            <div id="unreadNotifsCol" class="collapse show">
+            <div id="unreadNotifsCol" class="collapse show" style="max-height: 70vh !important;overflow-y:auto">
                 @if(count(Auth::user()->unreadNotifs) == 0)
                     <div class="has-background NONOTIFS pt-3 pb-3"></div>
                     <div class="w-100 align-text-center pt-4 pb-5">
@@ -82,7 +82,7 @@
                 @endif
             </div>
             <!-- all notifs -->
-            <div id="allNotifsCol" class="collapse">
+            <div id="allNotifsCol" class="collapse" style="max-height: 70vh !important;overflow-y:auto">
                 @if(count(Auth::user()->allNotifs) == 0)
                     <div class="has-background NONOTIFS pt-3 pb-3"></div>
                     <div class="w-100 align-text-center pt-4 pb-5">
@@ -90,7 +90,6 @@
                     </div>
                 @else
                     @foreach(Auth::user()->allNotifs as $key => $notif)
-                    <?php HomeController::markAsRead($notif->id) ?>
                         <div class="row mb-2 ml-1 mr-1 pl-3 pr-3 pt-2 border-bottom white" id="{{ 'notif_'.$key }}">
                             <div class="col-12 p-0 overflow-x-hidden">
                                 <p class="text m-0 fs-14">{!! $notif->message !!}</p>

@@ -80,7 +80,6 @@ export default class SponsorsList extends Component {
                                                         </div>
                                                         <div className="col-3 pt-1 align-text-right">
                                                             <span style={{ fontSize: 16 }}>{sponsor.units} Unit{sponsor.units > 1 ? 's' : null}</span>
-                                                            {sponsor.has_received_returns ? <span className="badge badge-success">Returns Received</span> : null}
                                                         </div>
                                                     </div>
                                                 </li>

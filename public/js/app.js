@@ -68894,6 +68894,63 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/components/MiscComponents.js":
+/*!***************************************************!*\
+  !*** ./resources/js/components/MiscComponents.js ***!
+  \***************************************************/
+/*! exports provided: SponsorListItem */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SponsorListItem", function() { return SponsorListItem; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+var SponsorListItem = function SponsorListItem(props) {
+  var sponsor = props.sponsor;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+    className: "list-group-item"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-1"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "btn m-0 shadow-none",
+    disabled: sponsor.has_received_returns,
+    onClick: function onClick() {
+      return props.toggleChecker(sponsor.id);
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: props.checkIfPresent(sponsor.id) ? "fa fa-check-square fa-2x" : "fa fa-2x fa-square-o"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-2"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    className: "img-responsive btn-sm-rounded grey lighten-3",
+    src: sponsor.user.profile.avatar_url
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-6"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    style: {
+      fontSize: 18
+    }
+  }, sponsor.user.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    style: {
+      fontSize: 15
+    }
+  }, sponsor.user.email, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), sponsor.user.profile.phone_no)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3 pt-1 align-text-right"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    style: {
+      fontSize: 16
+    }
+  }, sponsor.units, " Unit", sponsor.units > 1 ? 's' : null), sponsor.has_received_returns ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "badge badge-success"
+  }, "Returns Received")) : null)));
+};
+
+/***/ }),
+
 /***/ "./resources/js/components/SponsorsList.js":
 /*!*************************************************!*\
   !*** ./resources/js/components/SponsorsList.js ***!
@@ -69041,9 +69098,7 @@ function (_Component) {
           style: {
             fontSize: 16
           }
-        }, sponsor.units, " Unit", sponsor.units > 1 ? 's' : null), sponsor.has_received_returns ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "badge badge-success"
-        }, "Returns Received") : null)));
+        }, sponsor.units, " Unit", sponsor.units > 1 ? 's' : null))));
       }))))));
     }
   }]);
@@ -69078,6 +69133,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _MiscComponents__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MiscComponents */ "./resources/js/components/MiscComponents.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -69100,6 +69156,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var SponsorshipPayouts =
 /*#__PURE__*/
 function (_Component) {
@@ -69112,53 +69169,128 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(SponsorshipPayouts).call(this, props));
     _this.state = {
+      selectAll: false,
+      isPaying: false,
+      showConfirmation: false,
+      selectedSponsors: [],
       sponId: _this.props.sponId,
       sponsors: [],
+      sponsorship: null,
       isLoading: true,
       requestSuccess: false,
       error: null
     };
-    _this.getSponsors = _this.getSponsors.bind(_assertThisInitialized(_this));
+    _this.initComponent = _this.initComponent.bind(_assertThisInitialized(_this));
+    _this.selectAll = _this.selectAll.bind(_assertThisInitialized(_this));
+    _this.payoutSelected = _this.payoutSelected.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(SponsorshipPayouts, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.getSponsors();
+      this.initComponent();
     }
   }, {
-    key: "getSponsors",
-    value: function getSponsors() {
+    key: "selectAll",
+    value: function selectAll() {
+      this.setState({
+        selectAll: !this.state.selectAll,
+        selectedSponsors: []
+      });
+
+      if (!this.state.selectAll) {
+        // populate the selectedSponsors array
+        var arr = [];
+        this.state.sponsors.forEach(function (sponsor) {
+          if (!sponsor.has_received_returns) {
+            arr.push(sponsor.id);
+          }
+        });
+        this.setState({
+          selectedSponsors: arr
+        });
+      }
+    }
+  }, {
+    key: "payoutSelected",
+    value: function payoutSelected(useDefault) {
       var _this2 = this;
+
+      if (this.state.selectedSponsors.length > 0) {
+        this.setState({
+          isPaying: true
+        });
+        var params = "";
+
+        if (!useDefault) {
+          params = "&exp_ret_pct=" + this.state.exp_ret_pct;
+        }
+
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("/cms/sponsorsPayoutInitiate?spon_id=" + this.state.sponsorship.id + "&useDefault=" + useDefault + "&sponsors=" + this.state.selectedSponsors.toString() + params).then(function (response) {
+          var data = response.data;
+          console.log("SPON PAYOUT", data);
+
+          _this2.setState({
+            isPaying: false,
+            requestSuccess: true,
+            selectedSponsors: [],
+            selectAll: false,
+            showConfirmation: false,
+            sponsors: data.sponsors_data.sponsors,
+            sponsorship: data.sponsorship,
+            error: null
+          });
+        })["catch"](function (errors) {
+          _this2.setState({
+            isPaying: false,
+            sponsors: [],
+            sponsorship: null,
+            error: errors.message,
+            requestSuccess: false
+          });
+
+          alert(errors.message);
+          console.log(errors);
+        });
+      }
+    }
+  }, {
+    key: "initComponent",
+    value: function initComponent() {
+      var _this3 = this;
 
       this.setState({
         isLoading: true
       });
-      console.log("spon_id", this.state.sponId);
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/cms/getSponsorshipPayouts?spon_id=' + this.state.sponId).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/cms/getSponsorshipPayoutsData?spon_id=' + this.state.sponId).then(function (response) {
         var data = response.data;
 
-        _this2.setState({
+        _this3.setState({
           isLoading: false,
           requestSuccess: true,
-          sponsors: data.sponsors,
+          sponsors: data.sponsors_data.sponsors,
+          sponsorship: data.sponsorship,
           error: null
         });
       })["catch"](function (errors) {
-        _this2.setState({
+        _this3.setState({
           isLoading: false,
           sponsors: [],
+          sponsorship: null,
           error: errors.message,
           requestSuccess: false
         });
 
+        alert(errors.message);
         console.log(errors);
       });
     }
   }, {
     key: "render",
     value: function render() {
+      var _this4 = this;
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, this.state.isLoading ? null : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-fluid mb-5"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -69180,39 +69312,84 @@ function (_Component) {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-12"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+      }, this.state.sponsorship.is_completed ? this.state.showConfirmation ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "py-3 px-4 align-text-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
+        className: "h4-responnsive"
+      }, "Kindly confirm payout amount"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+        className: "h5-responsive"
+      }, "Would you like to pay the estimated returns to the selected sponsors?"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "btn green darken-3",
+        disabled: this.state.isPaying,
+        onClick: function onClick() {
+          return _this4.payoutSelected(true);
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "white-text"
+      }, this.state.isPaying ? "Please wait..." : "Pay " + Math.round(this.state.sponsorship.expected_returns_pct * 100) + "% for each sponsored unit")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "btn grey lighten-3",
+        onClick: function onClick() {
+          return _this4.setState({
+            showConfirmation: false
+          });
+        }
+      }, "Cancel")) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "navbar grey lighten-2 p-1"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "btn p-3 m-0 shadow-none",
+        onClick: function onClick() {
+          return _this4.selectAll();
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: this.state.selectedSponsors.length == this.state.sponsors.length ? "fa fa-check-square fa-2x" : "fa fa-2x fa-square-o"
+      })), this.state.selectedSponsors.length > 0 ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: function onClick() {
+          return _this4.setState({
+            showConfirmation: true
+          });
+        },
+        className: "btn grey darken-1 m-0 shadow-none"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "white-text"
+      }, "Payout Selected")) : null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "list-group"
       }, this.state.sponsors.map(function (sponsor, i) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_MiscComponents__WEBPACK_IMPORTED_MODULE_3__["SponsorListItem"], {
           key: i,
-          className: "list-group-item"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "row"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-2"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-          className: "img-responsive btn-sm-rounded grey lighten-3",
-          src: sponsor.user.profile.avatar_url
-        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-7"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          style: {
-            fontSize: 18
+          sponsor: sponsor,
+          state: _this4.state,
+          checkIfPresent: function checkIfPresent(id) {
+            return _this4.state.selectedSponsors.includes(id);
+          },
+          toggleChecker: function toggleChecker(id) {
+            // check if the id is found within the array,
+            // if so, remove it from the array,
+            // else add it to the array
+            var index = _this4.state.selectedSponsors.indexOf(id);
+
+            if (index < 0) {
+              // item not in the array, add it
+              _this4.setState({
+                selectedSponsors: _this4.state.selectedSponsors.concat(id)
+              });
+            } else {
+              var temp = [];
+
+              _this4.state.selectedSponsors.forEach(function (spon_id) {
+                if (spon_id != id) {
+                  temp.push(spon_id);
+                }
+              });
+
+              _this4.setState({
+                selectedSponsors: temp
+              });
+            }
           }
-        }, sponsor.user.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          style: {
-            fontSize: 15
-          }
-        }, sponsor.user.email, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), sponsor.user.profile.phone_no)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-3 pt-1 align-text-right"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          style: {
-            fontSize: 16
-          }
-        }, sponsor.units, " Unit", sponsor.units > 1 ? 's' : null), sponsor.has_received_returns ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          className: "badge badge-success"
-        }, "Returns Received") : null)));
-      }))))));
+        });
+      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "alert alert-danger"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Payouts can not be performed until sponsorship is completed."))))));
     }
   }]);
 

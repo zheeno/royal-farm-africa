@@ -42,7 +42,7 @@ class HomeController extends Controller
     public function index()
     {
         // get sposnorships
-        $sponsorships = Sponsorship::orderBy("id", "DESC")->take(3)->get();
+        $sponsorships = Sponsorship::where("is_completed", false)->where("in_progress", false)->orderBy("id", "DESC")->take(3)->get();
         // get sponsor statistics
         $stats = $this->getSponsorStats();
         return view('home')->with('data', [
@@ -273,7 +273,7 @@ class HomeController extends Controller
         // get sponsorships
         $sponsorHistory = Sponsor::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->get();
         // featured sponsorships
-        $sponsorships = Sponsorship::orderBy("id", "DESC")->take(3)->get();
+        $sponsorships = Sponsorship::where("is_completed", false)->where("in_progress", false)->orderBy("id", "DESC")->take(3)->get();
 
         // dd($stats);
         return view('sponsorHistory')->with('data', [

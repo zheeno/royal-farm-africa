@@ -76,7 +76,9 @@ Route::group(['middleware' => 'auth'], function(){
         Route::group(['prefix' => 'cms'], function(){
             Route::GET('/', 'CMSController@dashboard')->name('dashboard');
             Route::GET('/getSponsorsList', 'CMSController@getSponsorsList');
-
+            Route::GET('/getSponsorshipPayoutsData', 'CMSController@getSponsorshipPayoutsData');
+            Route::GET('/sponsorsPayoutInitiate', 'CMSController@sponsorsPayoutInitiate');
+            
             // categories group
             Route::group(['prefix' => 'categories'], function(){
                 Route::GET('/', 'CMSController@showCategories')->name('category');

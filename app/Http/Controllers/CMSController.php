@@ -12,15 +12,60 @@ use App\Location;
 use App\Profile;
 use App\User;
 use App\Notification;
+use App\Traits\GlobalTrait;
 
 class CMSController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    use GlobalTrait;
+    
     // display dashboard
     public function dashboard(){
         $transactions = Wallet::orderBy('id', 'DESC')->take(5)->get();
+        // calculate the sponsorship rate
+        // 1. get all sponsorships created
+        $tot_spon_units_created = 0; $tot_sponsored_units = 0; $spon_rate = 0; $ongoing = 0;
+        $capital_raised = 0; $sponsor_ids = [];
+        $sponsorships = Sponsorship::orderBy("id", "DESC")->get();
+        foreach ($sponsorships as $key => $sponsorship) {
+            $tot_spon_units_created += $sponsorship->total_units;
+            if(!$sponsorship->is_completed){
+                $ongoing++;
+            }
+            // 2. get all sponsored units for the selected sponsorship
+            $sponsors = Sponsor::where("sponsorship_id", $sponsorship->id)->orderBy("id", "DESC")->get();
+            foreach ($sponsors as $key => $sponsor) {
+                $tot_sponsored_units += $sponsor->units;
+                if(!$this->array_search($sponsor->user_id, $sponsor_ids)){
+                    array_push($sponsor_ids, $sponsor->user_id);
+                }
+                $capital_raised += $sponsor->total_capital;
+            }
+        }
+        if($tot_spon_units_created > 0){
+            $spon_rate = ($tot_sponsored_units / $tot_spon_units_created) * 100;
+        }
+
+        // get users
+        $users = User::all();
 
         return view('cms/index')->with('data', [
-            'transactions' => $transactions
+            'transactions' => $transactions,
+            'sponsorship_rate' => $spon_rate,
+            'user_count' => count($users),
+            'ongoing_sponsorships_counter' => $ongoing,
+            'sponsors_counter' => count($sponsor_ids),
+            'capital_raised' => $capital_raised,
         ]);
     }
 
@@ -267,8 +312,24 @@ class CMSController extends Controller
     // openSponsorshipPage
     public function openSponsorshipPage($id){
         $sponsorship = Sponsorship::findorfail($id);
+        $remSponsUnits = $sponsorship->total_units - $this->getSponsoredUnits($sponsorship);
+        // get other sponsors for this sponsorship
+        $oth_sponsors = Sponsor::where("sponsorship_id", $sponsorship->id)->get();
+        // loop through to get more data
+        $tot_cap = 0; $tot_pay_out = 0;
+        foreach ($oth_sponsors as $o_spon) {
+            $tot_cap += $o_spon->total_capital;
+            if($o_spon->has_received_returns){
+                $tot_pay_out += $o_spon->actual_returns_received;
+            }
+        } 
         return view("/cms/sponsorshipPage")->with("data", [
-            "sponsorship" => $sponsorship
+            "sponsorship" => $sponsorship,"other_sponsors" => $oth_sponsors,
+            "remSponsUnits" => $remSponsUnits,
+            "claimed_units" => $this->getSponsoredUnits($sponsorship),
+            "cap_raised" => $tot_cap,
+            "total_payouts" => $tot_pay_out,
+            "ratings" => $this->calcRating($sponsorship),
         ]);
     }
 
@@ -322,8 +383,7 @@ class CMSController extends Controller
         $id = $request->input('spon_id');
         $sponsors_ids = $request->input('sponsors');
         $sponsors_ids = explode(",", $sponsors_ids);
-        $useDefault = boolval($request->input('useDefault'));
-
+        $useDefault = $request->input('useDefault');
         $response = json_decode($this->getSponsorshipPayoutsData($request));
         $sponsorship = $response->sponsorship;
         $sponsors = $response->sponsors_data->sponsors;
@@ -333,10 +393,10 @@ class CMSController extends Controller
             $sponsor = Sponsor::find($sponsor_id);
             // check if sponsor has not received payout
             if(!$sponsor->has_received_returns){
-                if($useDefault){
+                if($useDefault == "true"){
                     $exp_pct = $sponsor->expected_return_pct;
                 }else{
-                    $exp_pct = floatval($request->input('exp_ret_pct'));
+                    $exp_pct = floatval($request->input('exp_ret_pct')) / 100;
                 }
                 // check if user has setup their profile 
                 $profile = Profile::where("user_id", $sponsor->user_id)->first();
@@ -350,6 +410,7 @@ class CMSController extends Controller
                     if($sponsor_data){
                         // modify data accordingly
                         $sponsor_data->actual_returns_received = $returns;
+                        $sponsor_data->received_returns_pct = $exp_pct;
                         $sponsor_data->has_received_returns = true;
                         $sponsor_data->save();
                         // add new entry into transactions record table

@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="row">
-          <div class="col-md-7">
+          <div class="col-md-10 mx-auto">
             @if(count($data['categories']) == 0)
               <div class="py-3 px-4 shadow-lg white">
                   <div class="has-background NORESULT pt-3 pb-3"></div>
@@ -34,7 +34,7 @@
                     <h4 class="h4-responsive mb-0 mt-3"><a href="/cms/categories/{{$category->id}}" class=" green-text">{{$category->category_name}}</a>@if($category->trashed())&nbsp;<small class="red-text">(Trashed)</small>@endif</h4>
                   </div>
                   <div class="col-12">
-                    <p class="text">{{CMSController::wrap_strip($category->description, 200)}}</p>
+                    <p class="text">{{CMSController::wrap_strip($category->description, 300)}}</p>
                     <div>
                       @foreach($category->subcategories as $subcategory)
                         <a href="/cms/categories/{{$category->id}}/{{$subcategory->id}}" class="badge bg-green white-text my-2 mx-1 py-2">{{$subcategory->sub_category_name}}</a>

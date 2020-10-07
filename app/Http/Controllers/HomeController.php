@@ -104,7 +104,7 @@ class HomeController extends Controller
                         $cart->total_capital = $capital;
                         $cart->save();
                         
-                        return redirect("/cart")->with("success", "Item added");
+                        return redirect("/sponsorships/$spons_id")->with("success", "Item has been successfully added to cart");
                     }else{
                         // invalid number of units selected
                         return redirect("/sponsorships/$spons_id")->with("error", "Invalid number of units selected");
@@ -333,7 +333,8 @@ class HomeController extends Controller
         $rev->review = $review;
         $rev->save();
 
-        return redirect("/sponsors/$sponsor_id");
+        // return redirect("/sponsors/$sponsor_id");
+        return redirect()->back();
     }
 
     // get initials

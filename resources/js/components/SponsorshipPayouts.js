@@ -18,14 +18,24 @@ export default class SponsorshipPayouts extends Component {
             isLoading: true,
             requestSuccess: false,
             error: null,
+            exp_ret_pct: null,
         }
         this.initComponent = this.initComponent.bind(this);
         this.selectAll = this.selectAll.bind(this);
         this.payoutSelected = this.payoutSelected.bind(this);
+        this.handleCustomEstEntry = this.handleCustomEstEntry.bind(this);
     }
 
     componentDidMount() {
         this.initComponent();
+    }
+
+
+    handleCustomEstEntry(e) {
+        const val = e.target["value"];
+        if (val != null) {
+            this.setState({ exp_ret_pct: val });
+        }
     }
 
     selectAll() {
@@ -63,6 +73,7 @@ export default class SponsorshipPayouts extends Component {
                         sponsors: data.sponsors_data.sponsors,
                         sponsorship: data.sponsorship,
                         error: null,
+                        exp_ret_pct: null,
                     });
                 }
             ).catch(errors => {
@@ -71,7 +82,8 @@ export default class SponsorshipPayouts extends Component {
                     sponsors: [],
                     sponsorship: null,
                     error: errors.message,
-                    requestSuccess: false
+                    requestSuccess: false,
+                    exp_ret_pct: null,
                 });
                 alert(errors.message);
                 console.log(errors);
@@ -133,6 +145,23 @@ export default class SponsorshipPayouts extends Component {
                                                 <h5 className="h5-responsive">Would you like to pay the estimated returns to the selected sponsors?</h5>
                                                 <button className="btn green darken-3" disabled={this.state.isPaying} onClick={() => this.payoutSelected(true)}><span className="white-text">{this.state.isPaying ? "Please wait..." : "Pay " + Math.round(this.state.sponsorship.expected_returns_pct * 100) + "% for each sponsored unit"}</span></button>
                                                 <button className="btn grey lighten-3" onClick={() => this.setState({ showConfirmation: false })}>Cancel</button>
+                                                <h3 className="h3-responsive">OR</h3>
+                                                <h5 className="h5-responsive">Would you like to pay a custom estimated percentage return to the selected sponsors?</h5>
+                                                <div className="row">
+                                                    <div className="col-md-4 mx-auto p-0 input-group">
+                                                        <input type="number" className="form-control" placeholder="34.35" value={this.state.exp_ret_pct} onChange={this.handleCustomEstEntry} />
+                                                        <div className="input-group-append">
+                                                            <span className="input-group-text" id="basic-addon1">% per unit</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {parseFloat(this.state.exp_ret_pct) > 0 && parseFloat(this.state.exp_ret_pct) <= 100 ?
+                                                    <div className="row">
+                                                        <div className="col-12 align-text-center">
+                                                            <button className="btn green darken-3" disabled={this.state.isPaying} onClick={() => this.payoutSelected(false)}><span className="white-text">{this.state.isPaying ? "Please wait..." : "Pay " + parseFloat(this.state.exp_ret_pct) + "% for each sponsored unit"}</span></button>
+                                                        </div>
+                                                    </div>
+                                                    : null}
                                             </div>
                                             :
                                             <React.Fragment>

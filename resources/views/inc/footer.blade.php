@@ -1,3 +1,5 @@
+<?php use App\Http\Controllers\GuestController; ?>
+
 <div class="row p-5 black-lighten-3">
     @guest()
     <div class="col-12 align-text-center">
@@ -9,21 +11,20 @@
         <div class="row">
             <div class="col-md-3 mx-auto" style="margin-top:20px">
                 <h4 class="white-text bold h4-responsive">About Us</h4>
-                <small><a class="grey-text" href="/">About</a></small><br />
-                <small><a class="grey-text" href="/">Blog</a></small><br />
-                <small><a class="grey-text" href="/">Terms</a></small><br />
-                <small><a class="grey-text" href="/">Privacy</a></small><br />
+                <small><a class="grey-text" href="/about">About</a></small><br />
+                <small><a class="grey-text" href="/blog">Blog</a></small><br />
+                <small><a class="grey-text" href="/terms">Terms</a></small><br />
+                <small><a class="grey-text" href="/privacy">Privacy</a></small><br />
             </div>
             <div class="col-md-3 mx-auto" style="margin-top:20px">
-                <h4 class="white-text bold h4-responsive">Service</h4>
-                <small><a class="grey-text" href="/">Downloads</a></small><br />
-                <small><a class="grey-text" href="/">Referal</a></small><br />
-                <small><a class="grey-text" href="/">Announcements</a></small><br />
-                </div>
+                <h4 class="white-text bold h4-responsive">Support</h4>
+                <small><a class="grey-text" href="{{route('contact')}}">Contact Us</a></small><br />
+                <small><a class="grey-text" href="{{route('faqs')}}">FAQ</a></small><br />
+            </div>
             <div class="col-md-3 mx-auto" style="margin-top:20px">
                 <h4 class="white-text bold h4-responsive">Support</h4>
-                <small><a class="grey-text" href="/">FAQ</a></small><br />
-                <small><a class="grey-text" href="/">Support Center</a></small><br />
+                <small><a class="grey-text" href="{{route('contact')}}">Contact Us</a></small><br />
+                <small><a class="grey-text" href="{{route('faqs')}}">FAQ</a></small><br />
                 <small><a class="grey-text" href="/">Submit a Request</a></small><br />
             </div>
         </div>

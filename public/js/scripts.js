@@ -253,3 +253,21 @@ $(".spon-state-tog").on("click", function (e) {
             break;
     }
 });
+
+
+// display faq delete confirmation modal
+$(".del-faq").on("click", function (e) {
+    e.preventDefault();
+    $('#deleteFaqModal #del_faq_id').val($(this).attr('data-faq-id'));
+    $('#deleteFaqModal #faq-question').text(`(${$(this).attr('data-faq-question')})`);
+    $('#deleteFaqModal').modal('show');
+});
+
+// display faq edit modal
+$(".edit-faq").on("click", function (e) {
+    e.preventDefault();
+    $('#editFaqModal #edit_faq_id').val($(this).attr('data-faq-id'));
+    $('#editFaqModal #question_editor').val(`${$(this).attr('data-faq-question')}`);
+    $('#editFaqModal #answer_editor').val(`${$(this).attr('data-faq-answer')}`);
+    $('#editFaqModal').modal('show');
+});

@@ -12,6 +12,8 @@
 */
 
 Route::GET('/', 'GuestController@landing')->name('landing');
+Route::GET('/faqs', 'GuestController@faqs')->name('faqs');
+Route::GET('/contact', 'GuestController@contact')->name('contact');
 
 
 Route::group(['middleware' => 'auth'], function(){
@@ -106,6 +108,17 @@ Route::group(['middleware' => 'auth'], function(){
                     Route::POST('/status', 'CMSController@updateSponsorshipStatus');
 
                 });
+            });
+
+            // pages setup group
+            Route::group(['prefix' => 'pages'], function(){
+                Route::GET('/faq', 'CMSPagesController@faq')->name('pages.faq');
+                Route::POST('/faq', 'CMSPagesController@createFaq')->name('pages.faq.create');
+                Route::POST('/faq/update', 'CMSPagesController@updateFaq')->name('pages.faq.update');
+                Route::POST('/faq/delete', 'CMSPagesController@deleteFaq')->name('pages.faq.delete');
+
+                Route::GET('/configs', 'CMSPagesController@configs')->name('pages.configs');
+
             });
         });
     });

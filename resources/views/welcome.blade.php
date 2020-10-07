@@ -118,9 +118,9 @@
         </div>
     </div>
 <!--  -->
-    <div class="row ">
+    <div class="row grey lighten-5">
         <div class="col-12 p-0">
-            <div class="jumbotron card shadow-none card-image hero-2 fixed-background p-0">
+            <div class="jumbotron card shadow-none card-image hero-2 fixed-background p-0 mb-0">
                 <div class="mask py-md-5 px-md-5">
                     <div class="row text-white py-5 px-4 my-5">
                         <div class="col-md-5 ml-auto">

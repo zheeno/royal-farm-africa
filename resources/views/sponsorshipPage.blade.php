@@ -6,6 +6,9 @@
     <div class="container pl-md-5 pr-md-5">
         <div class="row">
             <div class="col-10 mx-auto white mx-auto shadow-lg mt-5 mb-3">
+            @if(@session('success'))
+                <div class="alert alert-success my-4">{!! @session('success') !!}</div>
+            @endif
                 <div class="row">
                     <div class="col-md-4 p-0">
                         <div class="lg-card-img-container p-5 white" style="background-size:cover !important;background-image:url({{ $data['sponsorship']->subcategory->cover_image_url }});">
@@ -44,6 +47,7 @@
                                 </div>
                             </div>
                             @if($data['sponsorship']->total_units > $data['sponsored_units'] && $data['sponsorship']->is_active == true)
+                                @if(Auth::user()->profile)
                                 <form method="POST" action="/sponsors/addToCart">
                                     @csrf
                                     <input type="hidden" name="sponsorship_id" value="{{ $data['sponsorship']->id }}" />
@@ -59,7 +63,9 @@
                                                 </div>
                                             </div>
                                             @if($data['cart_item'])
-                                                <span class="neg-mt-10 red-text">Sponsorship added to cart</span>
+                                            <div class="alert alert-info p-1">
+                                                <small><span class="fa fa-info-circle"></span>&nbsp;<span>Sponsorship added to cart</span></small>
+                                            </div>
                                             @endif
                                         </div>
                                         <div class="col-md-6 mx-auto align-text-right">
@@ -67,6 +73,9 @@
                                         </div>
                                     </div>
                                 </form>
+                                @else
+                                <div class="alert alert-info p-2 small">You have not setup your profile. Kindly do so <a href="/profile">here</a> to take part in this sponsorship</div>
+                                @endif
                             @endif
                             @if(@session('error'))
                             <div class="alert alert-danger p-2 small">{{ @session('error')}}</div>

@@ -9,6 +9,8 @@ use App\Location;
 use App\Sponsor;
 use App\Sponsorship;
 use App\Subcategory;
+use App\FAQ;
+use App\Config;
 use App\Traits\GlobalTrait;
 
 class GuestController extends Controller
@@ -45,10 +47,10 @@ class GuestController extends Controller
             }
             if($id == null){
                 // get all sponsorships
-                $sponsorships = Sponsorship::where("category_id", $category->id)->where('in_progress', false)->where('is_completed', false)->orderBy('id', 'DESC')->paginate(12);
+                $sponsorships = Sponsorship::where('is_completed', false)->orderBy('is_active', 'DESC')->orderBy('id', 'DESC')->paginate(12);
             }else{
                 // get wrt selected subcategory
-                $sponsorships = Sponsorship::where("category_id", $category->id)->where('sub_category_id', $id)->where('in_progress', false)->where('is_completed', false)->orderBy('id', 'DESC')->paginate(12);
+                $sponsorships = Sponsorship::where("category_id", $category->id)->where('sub_category_id', $id)->where('is_completed', false)->orderBy('id', 'DESC')->paginate(12);//->where('in_progress', false)
                 $curCatId = $id;
                 $curSubCat = Subcategory::findorfail($curCatId);
             }
@@ -62,5 +64,24 @@ class GuestController extends Controller
         }else{
             abort(404);
         }
+    }
+
+    // show FAQ page
+    public function faqs(){
+        $faqs = FAQ::orderBy('id', 'DESC')->get();
+        return view('faqs')->with('data', [
+            'faqs' => $faqs
+        ]);
+    }
+
+    // show contact page
+    public function contact(Request $request){
+        return view('contact');
+    }
+
+    // get footer info
+    public function footerInfo(){
+        $config = Config::orderBy('id', 'DESC')->first();
+        return $config;
     }
 }

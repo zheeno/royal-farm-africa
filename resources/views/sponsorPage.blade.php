@@ -65,11 +65,6 @@
                             </div>
                             <div class="col-12 align-text-right">
                                 <div>
-                                    <button class="btn bg-green btn-sm-rounded float-right">
-                                        <span class="white-text">{{ HomeController::getInitials("Fruitful Farms") }}</span>
-                                    </button>&nbsp;
-                                    <strong class="float-right">Fruitful Farms</strong>
-                                    <br />
                                     <a data-toggle="tooltip" title="Category" href="/sponsorships?id={{ $data['sponsor']->sponsorship->subcategory->id }}" class="badge badge-success float-right">{{ $data['sponsor']->sponsorship->subcategory->sub_category_name }}</a>
                                 </div>
                             </div>
@@ -181,6 +176,7 @@
             <div class="col-md-5 mx-auto pt-2 pb-2">
                 <h3 class="text h3-responsive bold ml-3">Add your review</h3>
                 @if(Auth::user()->id == $data['sponsor']->user_id)
+                        <?php $sponsorship_id = $data['sponsor']->sponsorship_id; ?>
                         @include('inc/reviewForm')
                 @endif
             </div>
@@ -238,7 +234,7 @@
             <div class="row p-3 p-md-5">
                 <div class="col-md-7 mr-auto has-background NOREV"></div>
                 <div class="col-md-5 ml-auto">
-                    <h3 class="text fa-2x">Oops, there are reviews here.<br />Be the first to drop a review</h3>
+                    <h3 class="text fa-2x">Oops, there are no reviews here.<br />Be the first to drop a review</h3>
                     @if(Auth::user()->id == $data['sponsor']->user_id)
                         @include('inc/reviewForm')
                     @endif

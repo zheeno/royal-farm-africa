@@ -25,14 +25,14 @@
                     <h3 class="text h3-responsive ml-2 mb-0">Recent Transactions</h3>
                 </div>
             </div>
-            <div class="collapse show" id="mainTranCol">
-                @if(count(Auth::user()->recent_transacts) == 0)
+            <div class="collapse show" id="mainTranCol" style="max-height: 70vh !important;overflow-y:auto">
+                @if(count(Auth::user()->transactions) == 0)
                     <div class="has-background NOTRANSACT pt-3 pb-3"></div>
                     <div class="w-100 align-text-center pt-4 pb-5">
                         <h5 class="h5-responsive grey-text">No transactions found</h5>
                     </div>
                 @else
-                    @foreach(Auth::user()->recent_transacts as $key => $transaction)
+                    @foreach(Auth::user()->transactions as $key => $transaction)
                         <div class="row mb-2 ml-1 mr-1 shadow-sm pl-3 pr-3 pt-2 border-bottom white" id="{{ 'transact_'.$key }}">
                             <div class="col-12 p-0 overflow-x-hidden">
                                 <h5 class="h5-responsive mb-0 bold @if($transaction->is_credit)green-text @else red-text @endif">&#8358;{{ number_format($transaction->amount, 2) }}</h5>

@@ -19,15 +19,20 @@
             </div>
             <div class="p-0 col-8">
                 <strong class="text">{{ Auth::user()->name }}</strong>
-                <br /><span class="fs-14 neg-mt-10 grey-text">Sponsor</span>
+                <br />
+                @if(Auth::user()->isAdmin())
+                    <span class="badge badge-warning neg-mt-10">ADMIN</span>
+                @else
+                    <span class="badge badge-info neg-mt-10">SPONSOR</span>
+                @endif
             </div>
         </div>
         <form method="POST" action="/sponsorships/addReview">
             @csrf
             <div class="md-form m-0">
                 <span class="grey-text">Rating</span>
-                <input type="hidden" name="sponsor_id" value="{{ $data['sponsor']->id }}" />
-                <input type="hidden" name="sponsorship_id" value="{{ $data['sponsor']->sponsorship_id }}" />
+                <input type="hidden" name="sponsor_id" value="{{ Auth::user()->id }}" />
+                <input type="hidden" name="sponsorship_id" value="{{ $sponsorship_id}}" />
                 <input id="rating" type="hidden" name="rating" value="5" />
                 <button id="ratingButton" class="btn p-2 pl-0 align-text-left m-0 btn-block shadow-none" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="fa fa-star yellow-ic"></span>
@@ -46,7 +51,7 @@
             </div>
             <div class="md-form m-0 p-0">
                 <span class="grey-text" for="review">Review</span>
-                <textarea id="review" name="review" class="w-100 m-0 p-0 pt-2 md-textarea" placeholder="Tell us what you think"></textarea>
+                <textarea id="review" name="review" class="w-100 m-0 p-0 pt-2 md-textarea" placeholder="Tell us what you think" required></textarea>
             </div>
             <button type="submit" class="btn green-btn">Add Review</button>
         </form>

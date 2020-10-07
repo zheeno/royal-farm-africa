@@ -51,7 +51,7 @@
                 <i class="ti-angle-right"></i>
                 </span>
             </a>
-            <ul class="dropdown-menu show">
+            <ul class="dropdown-menu">
                 <li>
                     <a class="sidebar-link" href="/cms/categories">
                         <span class="icon-holder">
@@ -76,9 +76,6 @@
                             <i class="@if($cat->trashed()) c-red-200 @else c-blue-400 @endif ti-folder"></i>
                             </span>
                             <span class="title @if($cat->trashed()) c-red-200 @else c-grey-800 @endif">{{$cat->category_name}}</span>
-                            <span class="arrow">
-                            <i class="ti-angle-right"></i>
-                            </span>
                         </a>
                         <ul id="cat_drop_{{$index}}" class="dropdown-menu">
                             <li>
@@ -104,17 +101,17 @@
                 <span class="icon-holder">
                 <i class="c-orange-500 ti-files"></i>
                 </span>
-                <span class="title">Pages Setup</span>
+                <span class="title">Pages</span>
                 <span class="arrow">
                 <i class="ti-angle-right"></i>
                 </span>
             </a>
             <ul class="dropdown-menu">
                 <li>
-                <a class='sidebar-link' href="/cms/home">Home</a>
+                <a class='sidebar-link' href="{{route('pages.configs')}}">Site Config</a>
                 </li>
                 <li>
-                <a class='sidebar-link' href="datatable.html">Data Table</a>
+                <a class='sidebar-link' href="{{route('pages.faq')}}">FAQ</a>
                 </li>
             </ul>
         </li>

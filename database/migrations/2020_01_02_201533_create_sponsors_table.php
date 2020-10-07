@@ -20,6 +20,7 @@ class CreateSponsorsTable extends Migration
             $table->Integer('units');
             $table->float('price_per_unit');
             $table->float('expected_return_pct');
+            $table->float('received_returns_pct')->nullable();
             $table->boolean('has_received_returns')->default(false);
             $table->float('actual_returns_received')->default(0);
             $table->float('total_capital');

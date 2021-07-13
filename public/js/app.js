@@ -70850,8 +70850,8 @@ if (document.getElementById('sponsorshipPayouts')) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Applications/XAMPP/xamppfiles/htdocs/Royal_Farm_Tech/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Applications/XAMPP/xamppfiles/htdocs/Royal_Farm_Tech/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Applications/XAMPP/xamppfiles/htdocs/royal-farm-africa/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Applications/XAMPP/xamppfiles/htdocs/royal-farm-africa/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

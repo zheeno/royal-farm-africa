@@ -2,7 +2,7 @@
 
 <nav class="mb-1 navbar navbar-expand-lg navbar-light white shadow-none" style="margin-top: -13px;">
     <a class="navbar-brand  mr-4" href="/">
-        <img src="{{ asset('img/logo.png') }}" />
+        <img src="{{ asset('img/logo.png') }}" class="my-1" />
     </a>
     <button class="navbar-toggler" type="button" onClick='$("#navbarSupportedContent-4").collapse("toggle");' aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

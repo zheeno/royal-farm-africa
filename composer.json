@@ -1,18 +1,18 @@
 {
-    "name": "laravel/laravel",
+    "name": "farmtal/web",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "This is a web application for Farmtal",
     "keywords": [
-        "framework",
-        "laravel"
+        "farmtal",
+        "website"
     ],
     "license": "MIT",
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
-        "laravel/framework": "5.8.*",
-        "laravel/socialite": "^4.3",
-        "laravel/tinker": "^2.0",
+        "laravel/framework": "^6.2",
+        "laravel/socialite": "^4.4.1",
+        "laravel/tinker": "~2.0",
         "laravel/ui": "^1.1"
     },
     "require-dev": {

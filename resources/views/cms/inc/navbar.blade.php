@@ -1,4 +1,5 @@
 <!-- ### $Topbar ### -->
+<?php use App\Http\Controllers\HomeController; ?>
 <div class="header navbar">
     <div class="header-container">
         <ul class="nav-left">

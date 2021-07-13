@@ -27,8 +27,8 @@ class CreateSponsorshipsTable extends Migration
             $table->boolean('is_active')->default(true);
             $table->boolean('in_progress')->default(false);
             $table->boolean('is_completed')->default(false);
-            $table->dateTime('expected_completion_date');
-            $table->dateTime('actual_completion_date')->nullable();
+            // $table->dateTime('expected_completion_date');
+            // $table->dateTime('actual_completion_date')->nullable();
             $table->timestamps();
         });
     }

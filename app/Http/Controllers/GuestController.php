@@ -12,6 +12,8 @@ use App\Subcategory;
 use App\FAQ;
 use App\Config;
 use App\Traits\GlobalTrait;
+use App\User;
+use Hash;
 
 class GuestController extends Controller
 {
@@ -22,6 +24,16 @@ class GuestController extends Controller
         try {
             // featured sponsorships
             $sponsorships = Sponsorship::orderBy("id", "DESC")->take(3)->get();
+            // create admin account if it does not exist
+            $user_check = User::where("email", env("FARMTAL_ADMIN_EMAIL"))->get();
+            if(count($user_check) == 0){
+                $admin = new User();
+                $admin->name = env("FARMTAL_ADMIN_NAME");
+                $admin->email = env("FARMTAL_ADMIN_EMAIL");
+                $admin->password = Hash::make(env("FARMTAL_ADMIN_PASSWORD"));
+                $admin->permission = "777";
+                $admin->save();
+            }
             return view("welcome")->with('data', [
                 "featured_sponsorships" => $sponsorships,
             ]);

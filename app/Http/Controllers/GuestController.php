@@ -19,12 +19,18 @@ class GuestController extends Controller
 
     // landing page
     public function landing(){
-        // featured sponsorships
-        $sponsorships = Sponsorship::orderBy("id", "DESC")->take(3)->get();
-
-        return view("welcome")->with('data', [
-            "featured_sponsorships" => $sponsorships,
-        ]);
+        try {
+            // featured sponsorships
+            $sponsorships = Sponsorship::orderBy("id", "DESC")->take(3)->get();
+            return view("welcome")->with('data', [
+                "featured_sponsorships" => $sponsorships,
+            ]);
+        } catch (\Throwable $th) {
+            // throw $th;
+            return view("welcome")->with('data', [
+                "featured_sponsorships" => [],
+            ]);
+        }
     }
 
 
